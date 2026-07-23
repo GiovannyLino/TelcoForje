@@ -6,6 +6,8 @@ import { SignupPage } from '@/features/auth/pages/signup-page'
 import { Placeholder } from './pages/placeholder'
 import { NotFound } from './pages/not-found'
 import { StyleGuide } from './pages/styleguide'
+import { OpportunitiesPage } from '@/features/opportunities/pages/opportunities-page'
+import { OpportunityDetailPage } from '@/features/opportunities/pages/opportunity-detail-page'
 
 export const router = createBrowserRouter([
   {
@@ -35,15 +37,8 @@ export const router = createBrowserRouter([
         path: '/',
         element: <Placeholder title="Dashboard" descricao="Sua visão do dia chega na Fase 6." />,
       },
-      {
-        path: '/oportunidades',
-        element: (
-          <Placeholder
-            title="Oportunidades"
-            descricao="CRUD e trilho de contexto chegam na Fase 2."
-          />
-        ),
-      },
+      { path: '/oportunidades', element: <OpportunitiesPage /> },
+      { path: '/oportunidades/:id', element: <OpportunityDetailPage /> },
       {
         path: '/kanban',
         element: <Placeholder title="Kanban" descricao="Board de soluções chega na Fase 3." />,
