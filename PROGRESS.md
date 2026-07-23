@@ -29,5 +29,21 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 
 ---
 
-## Fase 1 — Auth e shell ⏳
-_(em andamento)_
+## Fase 1 — Auth e shell ✅
+
+**Feito**
+- Providers: TanStack Query, `ThemeProvider` (claro/escuro/sistema, persistido, sem flash via script inline no `index.html`), `AuthProvider` (sessão via `onAuthStateChange`), `Toaster` (sonner).
+- Auth por e-mail/senha: login, cadastro (`nome` → `user_metadata`), logout. Erros do GoTrue traduzidos para pt-BR. `react-hook-form` + `zod`.
+- Roteamento (React Router v7 data router): rotas públicas `/login` e `/cadastro` (redirecionam se já logado) e área privada protegida por `RequireAuth` (redireciona para `/login` preservando a origem).
+- Shell: topbar (toggle de menu, logo, campo de busca ⌘K placeholder, tema, menu do usuário) + sidebar colapsável (estado persistido) + conteúdo. Placeholders honestos "em construção" por módulo + página 404.
+- `ThemeToggle` reativo ao tema resolvido (cobre `system` via `prefers-color-scheme`).
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅. Teste de fumaça no GoTrue local: signup e login retornam `access_token` e gravam `nome` em `user_metadata`.
+
+**Notas**
+- Persistência de sessão via supabase-js (`persistSession`); o clique-a-clique completo (entrar → recarregar mantém → sair) entra no E2E do Playwright na Fase 6.
+- Bundle único de ~820 kB (243 kB gzip): code-splitting por rota quando `recharts` (dashboard) e `@react-pdf` (discovery) forem usados.
+- Perfil completo (tabela `profiles` + trigger `handle_new_user`) chega na Fase 2; por ora o nome vem de `user_metadata` e o item "Meu perfil" fica desabilitado.
+- Navegação mobile (drawer) fica para acabamento; hoje a sidebar some em telas pequenas.
+
+**Pendências declaradas:** nenhuma para o "pronto quando" da Fase 1 (entrar/sair/sessão/proteção de rotas).
