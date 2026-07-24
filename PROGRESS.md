@@ -47,3 +47,30 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 - Navegação mobile (drawer) fica para acabamento; hoje a sidebar some em telas pequenas.
 
 **Pendências declaradas:** nenhuma para o "pronto quando" da Fase 1 (entrar/sair/sessão/proteção de rotas).
+
+---
+
+## Fase 2 — Núcleo do domínio + Workspace ✅
+
+**Banco (migrations + RLS + Storage)**
+- Tabelas: `profiles`, `clients`, `board_columns`, `opportunities`, `folders`, `files`, `templates`, `documents`. `updated_at` por trigger; `deleted_at` (lixeira) em folders/files.
+- Refinamentos: `board_columns` (colunas configuráveis) e `documents` (cópia de template dentro da oportunidade).
+- Bootstrap de perfil (`handle_new_user` + backfill) e guard de `role` (só admin; contexto de servidor/seed liberado).
+- RLS em todas as tabelas via helpers `security definer` (`is_admin`, `pode_ler_pasta`, `pode_escrever_pasta`) — sem recursão. Grants explícitos para `authenticated`/`service_role`.
+- Storage: bucket privado `files` (policies espelham as pastas; caminho `{folder_id}/{file_id}/{versao}__nome`) + `avatars` público. Download por signed URL (300 s).
+- Advisors/linter limpos; types do banco gerados.
+
+**Isolamento provado (2 usuários):** Léo não lê nem baixa a pasta privada da Ana; a pasta do time é legível mas não gravável por não-dono (HTTP 403); upload no Storage idem (dono 200, não-dono bloqueado).
+
+**UI**
+- Oportunidades: lista, detalhe com abas + **trilho de contexto**, criar, mover coluna, excluir. Criar cliente.
+- Workspace (aba Arquivos): árvore de pastas (privada/time), upload drag & drop com **progresso real** (XHR no endpoint de Storage), versionamento, tags, download por signed URL, preview de imagem/PDF, soft delete.
+- Templates: biblioteca com filtro por tipo, editor Markdown com preview ao vivo, **"usar este template"** → cria documento na oportunidade.
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅.
+
+**Notas / pendências declaradas**
+- Arquivos do seed são metadados (sem blob); download/preview deles falha graciosamente — uploads pela UI funcionam de verdade.
+- Workspace é escopado por oportunidade; uma visão global "meus arquivos" (pastas sem oportunidade) fica como acabamento.
+- Update/delete de cliente pela UI ainda não (só create + uso no select) — anotado para acabamento.
+- Code-splitting por rota segue pendente (bundle único ~1 MB); farei quando `recharts`/`@react-pdf` entrarem (Fases 5–6).

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, FileText, MoreHorizontal, Paperclip, Trash2 } from 'lucide-react'
+import { ArrowLeft, FileText, MoreHorizontal, Trash2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -33,39 +33,9 @@ import {
 import { ContextRail } from '../components/context-rail'
 import { useBoardColumns, useDeleteOpportunity, useOpportunity, useUpdateOpportunity } from '../hooks'
 import { dueStatus, prioridadeLabel, prioridadeTone } from '../lib'
-import { formatBytes, formatDateOnly } from '@/lib/format'
-import { useFilesByOpportunity } from '@/features/workspace/hooks'
+import { formatDateOnly } from '@/lib/format'
+import { WorkspacePanel } from '@/features/workspace/components/workspace-panel'
 import { useDocumentsByOpportunity } from '@/features/documents/hooks'
-
-function OppArquivos({ oppId }: { oppId: string }) {
-  const files = useFilesByOpportunity(oppId)
-  if (files.isLoading) return <Skeleton className="h-24" />
-  if (!files.data || files.data.length === 0) {
-    return (
-      <EmptyState
-        icon={<Paperclip />}
-        title="Nenhum arquivo nesta oportunidade"
-        description="Anexe arquivos nas pastas do workspace desta oportunidade."
-      />
-    )
-  }
-  return (
-    <ul className="flex flex-col gap-1">
-      {files.data.map((f) => (
-        <li
-          key={f.id}
-          className="flex items-center justify-between gap-3 rounded-md border border-line bg-surface px-3 py-2 text-[13px]"
-        >
-          <span className="truncate font-mono text-ink">{f.nome}</span>
-          <span className="flex shrink-0 items-center gap-3 text-muted">
-            <span>v{f.versao}</span>
-            <span>{formatBytes(f.size_bytes)}</span>
-          </span>
-        </li>
-      ))}
-    </ul>
-  )
-}
 
 function OppDocumentos({ oppId }: { oppId: string }) {
   const docs = useDocumentsByOpportunity(oppId)
@@ -217,7 +187,7 @@ export function OpportunityDetailPage() {
               <TabsTrigger value="atividade">Atividade</TabsTrigger>
             </TabsList>
             <TabsContent value="arquivos">
-              <OppArquivos oppId={o.id} />
+              <WorkspacePanel opportunityId={o.id} />
             </TabsContent>
             <TabsContent value="documentos">
               <OppDocumentos oppId={o.id} />

@@ -8,6 +8,8 @@ import { NotFound } from './pages/not-found'
 import { StyleGuide } from './pages/styleguide'
 import { OpportunitiesPage } from '@/features/opportunities/pages/opportunities-page'
 import { OpportunityDetailPage } from '@/features/opportunities/pages/opportunity-detail-page'
+import { TemplatesPage } from '@/features/templates/pages/templates-page'
+import { TemplateEditorPage } from '@/features/templates/pages/template-editor-page'
 
 export const router = createBrowserRouter([
   {
@@ -61,12 +63,9 @@ export const router = createBrowserRouter([
           />
         ),
       },
-      {
-        path: '/templates',
-        element: (
-          <Placeholder title="Templates" descricao="Biblioteca de templates chega na Fase 2." />
-        ),
-      },
+      { path: '/templates', element: <TemplatesPage /> },
+      { path: '/templates/novo', element: <TemplateEditorPage /> },
+      { path: '/templates/:id', element: <TemplateEditorPage /> },
       {
         path: '/busca',
         element: <Placeholder title="Busca" descricao="Busca global chega na Fase 6." />,
