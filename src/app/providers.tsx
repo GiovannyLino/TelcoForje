@@ -1,5 +1,6 @@
 import { type ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { MotionConfig } from 'motion/react'
 import { Toaster } from 'sonner'
 import { ThemeProvider } from './theme'
 import { AuthProvider } from '@/features/auth/auth-context'
@@ -15,8 +16,8 @@ export function Providers({ children }: { children: ReactNode }) {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <AuthProvider>
-          {children}
-          <Toaster position="top-right" closeButton />
+          <MotionConfig reducedMotion="user">{children}</MotionConfig>
+          <Toaster position="top-right" closeButton richColors />
         </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>

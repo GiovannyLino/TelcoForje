@@ -17,12 +17,15 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center gap-3 rounded-md border border-dashed border-line bg-surface px-6 py-12 text-center',
+        'flex flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-line bg-surface/40 px-6 py-12 text-center backdrop-blur-sm',
         className,
       )}
     >
       {icon ? (
-        <div className="text-muted [&_svg]:size-6" aria-hidden>
+        <div
+          className="grid size-12 place-items-center rounded-full bg-signal-weak text-signal [&_svg]:size-5"
+          aria-hidden
+        >
           {icon}
         </div>
       ) : null}
