@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { LogicalisMark } from '@/assets/brand/logicalis-mark'
+import { Logo } from '@/components/shared/logo'
 import { APP_VENDOR } from '@/lib/constants'
 import { PartnerMarquee } from './partner-marquee'
 
@@ -39,12 +39,7 @@ export function AuthShell({
       <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-12">
         <div className="w-full max-w-md rise-in">
           <div className="mb-7 flex flex-col items-center gap-4 text-center">
-            <span className="inline-flex items-center gap-2.5">
-              <LogicalisMark className="size-11 drop-shadow-sm" />
-              <span className="font-display text-[26px] font-semibold tracking-tight text-ink">
-                Telco<span className="text-signal">Forge</span>
-              </span>
-            </span>
+            <Logo size="lg" markClassName="drop-shadow-sm" />
             <div className="flex flex-col gap-1.5">
               <h1 className="font-display text-[22px] font-semibold text-ink">{title}</h1>
               <p className="text-[13px] text-muted">{subtitle}</p>
