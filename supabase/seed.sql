@@ -1,5 +1,7 @@
 -- Fase 2 — Seed. Roda após as migrations no `supabase db reset`.
 -- Senha de todos os usuários demo: telcoforge123
+-- Domínio: pré-vendas técnica de telecom/observability (Logicalis). Clientes são
+-- operadoras brasileiras; os recursos de laboratório usam fabricantes parceiros.
 
 -- ── Usuários demo ─────────────────────────────────────────────────────────
 -- Bloco DO: criado e executado junto, sem depender de função pré-existente
@@ -46,24 +48,24 @@ insert into public.board_columns (id, nome, position) values
   ('c0000000-0000-4000-8000-000000000004', 'Validado com cliente', 4),
   ('c0000000-0000-4000-8000-000000000005', 'Entregue', 5);
 
--- ── Clientes ──────────────────────────────────────────────────────────────
+-- ── Clientes (operadoras brasileiras) ─────────────────────────────────────
 insert into public.clients (id, nome, segmento, owner_id) values
-  ('d0000000-0000-4000-8000-000000000001', 'ACME Telecom', 'Telecom', 'a0000000-0000-4000-8000-000000000001'),
-  ('d0000000-0000-4000-8000-000000000002', 'Volt Energia', 'Utilities', 'a0000000-0000-4000-8000-000000000002'),
-  ('d0000000-0000-4000-8000-000000000003', 'Nexa Varejo', 'Varejo', 'a0000000-0000-4000-8000-000000000001'),
-  ('d0000000-0000-4000-8000-000000000004', 'Rede Sul', 'Provedor regional', 'a0000000-0000-4000-8000-000000000003'),
-  ('d0000000-0000-4000-8000-000000000005', 'Sigma Cloud', 'Cloud / SaaS', 'a0000000-0000-4000-8000-000000000002');
+  ('d0000000-0000-4000-8000-000000000001', 'TIM Brasil', 'Operadora móvel', 'a0000000-0000-4000-8000-000000000001'),
+  ('d0000000-0000-4000-8000-000000000002', 'Claro', 'Operadora integrada', 'a0000000-0000-4000-8000-000000000002'),
+  ('d0000000-0000-4000-8000-000000000003', 'Vivo (Telefônica Brasil)', 'Operadora integrada', 'a0000000-0000-4000-8000-000000000001'),
+  ('d0000000-0000-4000-8000-000000000004', 'Embratel', 'Backbone / corporativo', 'a0000000-0000-4000-8000-000000000003'),
+  ('d0000000-0000-4000-8000-000000000005', 'V.tal', 'Rede neutra de fibra', 'a0000000-0000-4000-8000-000000000002');
 
 -- ── Oportunidades (espalhadas pelo Kanban) ────────────────────────────────
 insert into public.opportunities (id, client_id, titulo, descricao, column_id, prioridade, owner_id, due_date, position, tags) values
-  ('e0000000-0000-4000-8000-000000000001', 'd0000000-0000-4000-8000-000000000001', 'SD-WAN campus', 'Redesenho da WAN corporativa com SD-WAN em 24 sites.', 'c0000000-0000-4000-8000-000000000002', 'alta', 'a0000000-0000-4000-8000-000000000001', current_date + 2, 1, '{sd-wan,campus}'),
-  ('e0000000-0000-4000-8000-000000000002', 'd0000000-0000-4000-8000-000000000002', 'Última milha em fibra', 'Conectividade de última milha para 8 subestações.', 'c0000000-0000-4000-8000-000000000001', 'alta', 'a0000000-0000-4000-8000-000000000002', current_date + 10, 1, '{fibra,ultima-milha}'),
-  ('e0000000-0000-4000-8000-000000000003', 'd0000000-0000-4000-8000-000000000003', 'Observabilidade de rede', 'Stack de observabilidade e alerta para 300 lojas.', 'c0000000-0000-4000-8000-000000000003', 'media', 'a0000000-0000-4000-8000-000000000001', current_date + 5, 1, '{observabilidade,nms}'),
-  ('e0000000-0000-4000-8000-000000000004', 'd0000000-0000-4000-8000-000000000004', 'Core MPLS', 'Upgrade do core MPLS e peering.', 'c0000000-0000-4000-8000-000000000004', 'media', 'a0000000-0000-4000-8000-000000000003', null, 1, '{mpls,core}'),
-  ('e0000000-0000-4000-8000-000000000005', 'd0000000-0000-4000-8000-000000000005', 'Migração para cloud', 'Landing zone e conectividade híbrida.', 'c0000000-0000-4000-8000-000000000001', 'baixa', 'a0000000-0000-4000-8000-000000000002', current_date + 20, 2, '{cloud,hibrido}'),
-  ('e0000000-0000-4000-8000-000000000006', 'd0000000-0000-4000-8000-000000000001', 'Segurança de perímetro', 'NGFW e segmentação para o data center.', 'c0000000-0000-4000-8000-000000000002', 'critica', 'a0000000-0000-4000-8000-000000000003', current_date - 1, 2, '{seguranca,ngfw}'),
-  ('e0000000-0000-4000-8000-000000000007', 'd0000000-0000-4000-8000-000000000002', 'Enlace por rádio', 'Backup por rádio licenciado entre dois sites.', 'c0000000-0000-4000-8000-000000000001', 'media', 'a0000000-0000-4000-8000-000000000001', current_date + 1, 3, '{radio,backup}'),
-  ('e0000000-0000-4000-8000-000000000008', 'd0000000-0000-4000-8000-000000000003', 'SD-WAN nas lojas', 'Piloto de SD-WAN entregue em 12 lojas.', 'c0000000-0000-4000-8000-000000000005', 'baixa', 'a0000000-0000-4000-8000-000000000002', null, 1, '{sd-wan,varejo}');
+  ('e0000000-0000-4000-8000-000000000001', 'd0000000-0000-4000-8000-000000000001', 'Observabilidade de backbone IP', 'Visibilidade fim-a-fim do backbone IP/MPLS com NETSCOUT nGeniusONE e Splunk em 42 PoPs (SP, RJ, BH, Curitiba, Fortaleza). SLA alvo 99,95% e MTTR < 30 min.', 'c0000000-0000-4000-8000-000000000002', 'alta', 'a0000000-0000-4000-8000-000000000001', current_date + 2, 1, '{observabilidade,netscout,splunk}'),
+  ('e0000000-0000-4000-8000-000000000002', 'd0000000-0000-4000-8000-000000000002', 'SD-WAN gerenciado — 320 sites', 'Cisco Catalyst SD-WAN para 320 sites corporativos: failover < 1 s, priorização de voz e latência intra-SP < 8 ms.', 'c0000000-0000-4000-8000-000000000001', 'alta', 'a0000000-0000-4000-8000-000000000002', current_date + 10, 1, '{sd-wan,cisco}'),
+  ('e0000000-0000-4000-8000-000000000003', 'd0000000-0000-4000-8000-000000000003', 'Assurance de rede móvel 5G', 'Assurance de KPIs de RAN e core 5G SA em SP e RJ; jitter < 3 ms e throughput agregado de 1,2 Tbps.', 'c0000000-0000-4000-8000-000000000003', 'media', 'a0000000-0000-4000-8000-000000000001', current_date + 5, 1, '{5g,assurance,netscout}'),
+  ('e0000000-0000-4000-8000-000000000004', 'd0000000-0000-4000-8000-000000000004', 'Upgrade do core MPLS e peering', 'Core MPLS 100G e peering no IX.br em 5 PoPs (SP, RJ, BH, Curitiba, Fortaleza).', 'c0000000-0000-4000-8000-000000000004', 'media', 'a0000000-0000-4000-8000-000000000003', null, 1, '{mpls,peering}'),
+  ('e0000000-0000-4000-8000-000000000005', 'd0000000-0000-4000-8000-000000000005', 'Automação de última milha em fibra', 'Provisionamento automatizado XGS-PON para 12 mil OLTs; CAPEX estimado de R$ 3,2 mi.', 'c0000000-0000-4000-8000-000000000001', 'baixa', 'a0000000-0000-4000-8000-000000000002', current_date + 20, 2, '{fibra,pon,automacao}'),
+  ('e0000000-0000-4000-8000-000000000006', 'd0000000-0000-4000-8000-000000000001', 'SOC e SIEM gerenciado', 'SOC 24x7 com IBM QRadar e FortiSIEM: 1.800 EPS, correlação e resposta a incidentes.', 'c0000000-0000-4000-8000-000000000002', 'critica', 'a0000000-0000-4000-8000-000000000003', current_date - 1, 2, '{seguranca,siem,fortinet}'),
+  ('e0000000-0000-4000-8000-000000000007', 'd0000000-0000-4000-8000-000000000002', 'Monitoração sintética de experiência', 'ThousandEyes com testes sintéticos de rota e aplicação em 40 cidades, correlacionados a incidentes de última milha.', 'c0000000-0000-4000-8000-000000000001', 'media', 'a0000000-0000-4000-8000-000000000001', current_date + 1, 3, '{thousandeyes,experiencia}'),
+  ('e0000000-0000-4000-8000-000000000008', 'd0000000-0000-4000-8000-000000000003', 'Piloto de telemetria em lojas', 'Piloto entregue: streaming telemetry com VMware Aria e Grafana em 15 lojas próprias.', 'c0000000-0000-4000-8000-000000000005', 'baixa', 'a0000000-0000-4000-8000-000000000002', null, 1, '{telemetria,piloto}');
 
 -- ── Pastas (privadas e do time) ───────────────────────────────────────────
 insert into public.folders (id, owner_id, nome, visibility, opportunity_id) values
@@ -73,10 +75,10 @@ insert into public.folders (id, owner_id, nome, visibility, opportunity_id) valu
 
 -- ── Arquivos (metadados; blobs enviados pela UI) ──────────────────────────
 insert into public.files (id, folder_id, opportunity_id, nome, storage_path, mime, size_bytes, versao, uploader_id, tags) values
-  ('f1000000-0000-4000-8000-000000000001', 'f0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', 'topologia-acme-v3.drawio', 'f0000000-0000-4000-8000-000000000001/f1000000-0000-4000-8000-000000000001/3__topologia-acme-v3.drawio', 'application/xml', 214000, 3, 'a0000000-0000-4000-8000-000000000001', '{topologia,sd-wan}'),
-  ('f1000000-0000-4000-8000-000000000002', 'f0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', 'baseline-links.xlsx', 'f0000000-0000-4000-8000-000000000001/f1000000-0000-4000-8000-000000000002/1__baseline-links.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 88000, 1, 'a0000000-0000-4000-8000-000000000001', '{baseline}'),
+  ('f1000000-0000-4000-8000-000000000001', 'f0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', 'topologia-tim-backbone-v3.drawio', 'f0000000-0000-4000-8000-000000000001/f1000000-0000-4000-8000-000000000001/3__topologia-tim-backbone-v3.drawio', 'application/xml', 214000, 3, 'a0000000-0000-4000-8000-000000000001', '{topologia,backbone}'),
+  ('f1000000-0000-4000-8000-000000000002', 'f0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', 'baseline-pops.xlsx', 'f0000000-0000-4000-8000-000000000001/f1000000-0000-4000-8000-000000000002/1__baseline-pops.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 88000, 1, 'a0000000-0000-4000-8000-000000000001', '{baseline,pops}'),
   ('f1000000-0000-4000-8000-000000000003', 'f0000000-0000-4000-8000-000000000002', 'e0000000-0000-4000-8000-000000000001', 'proposta-tecnica-rascunho.md', 'f0000000-0000-4000-8000-000000000002/f1000000-0000-4000-8000-000000000003/1__proposta-tecnica-rascunho.md', 'text/markdown', 12000, 1, 'a0000000-0000-4000-8000-000000000001', '{rascunho}'),
-  ('f1000000-0000-4000-8000-000000000004', 'f0000000-0000-4000-8000-000000000003', null, 'proposta-observabilidade.pdf', 'f0000000-0000-4000-8000-000000000003/f1000000-0000-4000-8000-000000000004/1__proposta-observabilidade.pdf', 'application/pdf', 640000, 1, 'a0000000-0000-4000-8000-000000000002', '{proposta,observabilidade}');
+  ('f1000000-0000-4000-8000-000000000004', 'f0000000-0000-4000-8000-000000000003', null, 'proposta-observabilidade-netscout.pdf', 'f0000000-0000-4000-8000-000000000003/f1000000-0000-4000-8000-000000000004/1__proposta-observabilidade-netscout.pdf', 'application/pdf', 640000, 1, 'a0000000-0000-4000-8000-000000000002', '{proposta,observabilidade}');
 
 -- ── Templates (biblioteca curada, publicados) ─────────────────────────────
 insert into public.templates (id, tipo, titulo, conteudo_md, tags, author_id, is_published) values
@@ -113,6 +115,7 @@ $md$, '{poc,sd-wan}', 'a0000000-0000-4000-8000-000000000002', true),
 
 ## Coleta
 - SNMP, streaming telemetry, flow (NetFlow/IPFIX)
+- Sondas NETSCOUT e ingestão no Splunk
 
 ## Processamento e armazenamento
 ## Alertas e SLOs
@@ -122,74 +125,74 @@ $md$, '{observabilidade,proposta}', 'a0000000-0000-4000-8000-000000000001', true
 
 -- ── Documento (cópia de template dentro de uma oportunidade) ──────────────
 insert into public.documents (id, opportunity_id, source_template_id, titulo, conteudo_md, author_id) values
-  ('b1000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', 'b0000000-0000-4000-8000-000000000002', 'PoC SD-WAN — ACME', $md$# PoC SD-WAN — ACME
+  ('b1000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000002', 'b0000000-0000-4000-8000-000000000002', 'PoC SD-WAN — Claro', $md$# PoC SD-WAN — Claro
 
 ## Objetivo
-Validar failover e steering por aplicação nos 3 sites piloto da ACME.
+Validar failover e steering por aplicação nos 3 sites piloto da Claro (SP, RJ, BH).
 
 ## Critérios de sucesso
 - [ ] Failover < 1 s no enlace primário
 - [ ] Voz priorizada sobre o link de backup
-$md$, 'a0000000-0000-4000-8000-000000000001');
+$md$, 'a0000000-0000-4000-8000-000000000002');
 
--- ── Recursos (12, tipos variados) ─────────────────────────────────────────
+-- ── Recursos (12; fabricantes parceiros) ──────────────────────────────────
 insert into public.resources (id, tipo, nome, descricao, status, metadata, expira_em, responsavel_id) values
-  ('10000000-0000-4000-8000-000000000001', 'licenca', 'Cisco DNA Center', 'Licença de laboratório', 'disponivel', '{"vendor":"Cisco","edicao":"Advantage"}', current_date + 5, 'a0000000-0000-4000-8000-000000000001'),
-  ('10000000-0000-4000-8000-000000000002', 'licenca', 'Fortinet FortiManager', 'Gestão centralizada', 'disponivel', '{"vendor":"Fortinet"}', current_date + 20, 'a0000000-0000-4000-8000-000000000003'),
-  ('10000000-0000-4000-8000-000000000003', 'servidor_lab', 'Lab-rack R12', 'Servidor ESXi do rack R12', 'disponivel', '{"rack":"R12","cpu":"2x Xeon","ram":"256GB"}', null, 'a0000000-0000-4000-8000-000000000002'),
-  ('10000000-0000-4000-8000-000000000004', 'servidor_lab', 'Lab-rack R7', 'Servidor ESXi do rack R7', 'manutencao', '{"rack":"R7"}', null, null),
+  ('10000000-0000-4000-8000-000000000001', 'licenca', 'Splunk Enterprise', 'Licença de laboratório para observability', 'disponivel', '{"vendor":"Splunk","edicao":"Enterprise","volume":"50 GB/dia"}', current_date + 5, 'a0000000-0000-4000-8000-000000000001'),
+  ('10000000-0000-4000-8000-000000000002', 'licenca', 'Fortinet FortiManager', 'Gestão centralizada de firewalls', 'disponivel', '{"vendor":"Fortinet","modelo":"FMG-VM"}', current_date + 20, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-000000000003', 'servidor_lab', 'VMware ESXi — Rack R12', 'Hypervisor do rack R12', 'disponivel', '{"vendor":"VMware","rack":"R12","cpu":"2x Xeon Gold","ram":"256GB"}', null, 'a0000000-0000-4000-8000-000000000002'),
+  ('10000000-0000-4000-8000-000000000004', 'servidor_lab', 'Red Hat OpenShift — Rack R7', 'Cluster OpenShift de laboratório', 'manutencao', '{"vendor":"Red Hat","rack":"R7","produto":"OpenShift"}', null, null),
   ('10000000-0000-4000-8000-000000000005', 'porta_switch', 'Gi1/0/24', 'Porta de acesso do switch de lab', 'disponivel', '{"vendor":"Cisco","modelo":"C9300","rack":"R12","porta":"Gi1/0/24"}', null, 'a0000000-0000-4000-8000-000000000002'),
-  ('10000000-0000-4000-8000-000000000006', 'porta_switch', 'Te1/1/1', 'Uplink 10G', 'disponivel', '{"vendor":"Cisco","modelo":"C9500","porta":"Te1/1/1"}', null, null),
-  ('10000000-0000-4000-8000-000000000007', 'conta_demo', 'Conta demo AWS', 'Sandbox AWS para PoCs', 'disponivel', '{"provider":"AWS","conta":"1234-5678"}', current_date + 3, 'a0000000-0000-4000-8000-000000000001'),
-  ('10000000-0000-4000-8000-000000000008', 'conta_demo', 'Conta demo Azure', 'Sandbox Azure', 'disponivel', '{"provider":"Azure"}', current_date + 25, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-000000000006', 'porta_switch', 'Te1/1/1', 'Porta de uplink 100G para o core', 'disponivel', '{"vendor":"Cisco","modelo":"C9500","porta":"Te1/1/1","velocidade":"100G"}', null, null),
+  ('10000000-0000-4000-8000-000000000007', 'conta_demo', 'Sandbox AWS (PoC)', 'Sandbox AWS para PoCs', 'disponivel', '{"provider":"AWS","conta":"1234-5678"}', current_date + 3, 'a0000000-0000-4000-8000-000000000001'),
+  ('10000000-0000-4000-8000-000000000008', 'conta_demo', 'Sandbox Azure', 'Sandbox Azure', 'disponivel', '{"provider":"Azure"}', current_date + 25, 'a0000000-0000-4000-8000-000000000003'),
   ('10000000-0000-4000-8000-000000000009', 'credito_nuvem', 'Créditos GCP', 'Créditos para labs', 'disponivel', '{"provider":"GCP","saldo":"USD 500"}', current_date + 40, null),
   ('10000000-0000-4000-8000-00000000000a', 'credito_nuvem', 'Créditos OCI', 'Créditos Oracle Cloud', 'disponivel', '{"provider":"OCI","saldo":"USD 300"}', null, null),
-  ('10000000-0000-4000-8000-00000000000b', 'equipamento', 'Roteador C8300', 'Roteador de borda para bancada', 'disponivel', '{"vendor":"Cisco","modelo":"C8300-1N1S"}', null, 'a0000000-0000-4000-8000-000000000003'),
-  ('10000000-0000-4000-8000-00000000000c', 'equipamento', 'AP Wi-Fi 6E', 'Access point de teste', 'baixado', '{"vendor":"Cisco","modelo":"C9166"}', null, null);
+  ('10000000-0000-4000-8000-00000000000b', 'equipamento', 'NETSCOUT InfiniStreamNG', 'Sonda de assurance de serviço para bancada', 'disponivel', '{"vendor":"NETSCOUT","modelo":"ISNG 6900","interfaces":"2x100G"}', null, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-00000000000c', 'equipamento', 'ThousandEyes Enterprise Agent', 'Appliance de agente sintético', 'baixado', '{"vendor":"ThousandEyes","modelo":"CA-VA"}', null, null);
 
 -- ── Reservas (ao longo de ~2 semanas, sem sobreposição por recurso) ───────
 insert into public.reservations (id, resource_id, user_id, opportunity_id, periodo, finalidade) values
-  ('20000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', tstzrange((current_date)::timestamptz + interval '9 hours', (current_date)::timestamptz + interval '15 hours'), 'PoC SD-WAN ACME'),
-  ('20000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', null, tstzrange((current_date + 2)::timestamptz + interval '9 hours', (current_date + 2)::timestamptz + interval '12 hours'), 'Testes de licença'),
-  ('20000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'e0000000-0000-4000-8000-000000000006', tstzrange((current_date + 1)::timestamptz + interval '14 hours', (current_date + 1)::timestamptz + interval '18 hours'), 'Lab de segurança'),
+  ('20000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', tstzrange((current_date)::timestamptz + interval '9 hours', (current_date)::timestamptz + interval '15 hours'), 'Ingest lab — observabilidade TIM'),
+  ('20000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', null, tstzrange((current_date + 2)::timestamptz + interval '9 hours', (current_date + 2)::timestamptz + interval '12 hours'), 'Teste de volume de licença'),
+  ('20000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'e0000000-0000-4000-8000-000000000006', tstzrange((current_date + 1)::timestamptz + interval '14 hours', (current_date + 1)::timestamptz + interval '18 hours'), 'Lab de SOC/SIEM'),
   ('20000000-0000-4000-8000-000000000004', '10000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000001', null, tstzrange((current_date + 4)::timestamptz + interval '9 hours', (current_date + 4)::timestamptz + interval '17 hours'), 'Preparação de demo'),
-  ('20000000-0000-4000-8000-000000000005', '10000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000002', 'e0000000-0000-4000-8000-000000000002', tstzrange((current_date + 1)::timestamptz + interval '10 hours', (current_date + 1)::timestamptz + interval '12 hours'), 'Conectividade última milha'),
-  ('20000000-0000-4000-8000-000000000006', '10000000-0000-4000-8000-000000000007', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000005', tstzrange((current_date)::timestamptz + interval '8 hours', (current_date + 3)::timestamptz + interval '20 hours'), 'Landing zone'),
-  ('20000000-0000-4000-8000-000000000007', '10000000-0000-4000-8000-00000000000b', 'a0000000-0000-4000-8000-000000000003', null, tstzrange((current_date + 5)::timestamptz + interval '13 hours', (current_date + 5)::timestamptz + interval '18 hours'), 'Bancada de roteador'),
+  ('20000000-0000-4000-8000-000000000005', '10000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000002', 'e0000000-0000-4000-8000-000000000002', tstzrange((current_date + 1)::timestamptz + interval '10 hours', (current_date + 1)::timestamptz + interval '12 hours'), 'SD-WAN Claro — bancada'),
+  ('20000000-0000-4000-8000-000000000006', '10000000-0000-4000-8000-000000000007', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000005', tstzrange((current_date)::timestamptz + interval '8 hours', (current_date + 3)::timestamptz + interval '20 hours'), 'Automação de última milha V.tal'),
+  ('20000000-0000-4000-8000-000000000007', '10000000-0000-4000-8000-00000000000b', 'a0000000-0000-4000-8000-000000000003', null, tstzrange((current_date + 5)::timestamptz + interval '13 hours', (current_date + 5)::timestamptz + interval '18 hours'), 'Bancada da sonda NETSCOUT'),
   ('20000000-0000-4000-8000-000000000008', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', null, tstzrange((current_date + 7)::timestamptz + interval '9 hours', (current_date + 7)::timestamptz + interval '11 hours'), 'Revisão de licenças'),
   ('20000000-0000-4000-8000-000000000009', '10000000-0000-4000-8000-000000000004', 'a0000000-0000-4000-8000-000000000002', null, tstzrange((current_date + 2)::timestamptz + interval '8 hours', (current_date + 2)::timestamptz + interval '18 hours'), 'Manutenção programada');
 
 -- ── Mural (6 recados) ─────────────────────────────────────────────────────
 insert into public.notices (id, author_id, tipo, corpo, pinned, resource_id, expires_at) values
-  ('30000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', 'manutencao', 'Manutenção do Lab-rack R7 durante toda a semana. Evitem agendar nele.', true, '10000000-0000-4000-8000-000000000004', (current_date + 7)::timestamptz),
+  ('30000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', 'manutencao', 'Manutenção do Red Hat OpenShift (Rack R7) durante toda a semana. Evitem agendar nele.', true, '10000000-0000-4000-8000-000000000004', (current_date + 7)::timestamptz),
   ('30000000-0000-4000-8000-000000000002', 'a0000000-0000-4000-8000-000000000001', 'aviso', 'Liberem as reservas de laboratório que não forem usar até sexta.', false, null, null),
-  ('30000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'incidente', 'Porta Gi1/0/24 com flapping intermitente; em investigação.', false, '10000000-0000-4000-8000-000000000005', null),
-  ('30000000-0000-4000-8000-000000000004', 'a0000000-0000-4000-8000-000000000002', 'aviso', 'Nova licença Fortinet disponível para PoCs de segurança.', false, '10000000-0000-4000-8000-000000000002', null),
-  ('30000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000001', 'manutencao', 'Janela de manutenção da nuvem OCI na quinta, 22h às 23h.', false, '10000000-0000-4000-8000-00000000000a', null),
-  ('30000000-0000-4000-8000-000000000006', 'a0000000-0000-4000-8000-000000000003', 'aviso', 'Passagem de turno: DNA Center reservado para a PoC da ACME hoje.', false, '10000000-0000-4000-8000-000000000001', (current_date + 2)::timestamptz);
+  ('30000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'incidente', 'Porta Gi1/0/24 com flapping intermitente; impacto no lab de SD-WAN — em investigação.', false, '10000000-0000-4000-8000-000000000005', null),
+  ('30000000-0000-4000-8000-000000000004', 'a0000000-0000-4000-8000-000000000002', 'aviso', 'Sonda NETSCOUT nGeniusONE liberada para PoCs de assurance.', false, '10000000-0000-4000-8000-00000000000b', null),
+  ('30000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000001', 'manutencao', 'Janela de manutenção da sandbox Azure na quinta, 22h às 23h.', false, '10000000-0000-4000-8000-000000000008', null),
+  ('30000000-0000-4000-8000-000000000006', 'a0000000-0000-4000-8000-000000000003', 'aviso', 'Passagem de turno: Splunk reservado para a observabilidade da TIM hoje.', false, '10000000-0000-4000-8000-000000000001', (current_date + 2)::timestamptz);
 
--- Gera os avisos de vencimento automáticos (DNA Center, Conta demo AWS…).
+-- Gera os avisos de vencimento automáticos (Splunk, Sandbox AWS…).
 select public.gerar_avisos_vencimento();
 
 -- ── Discovery: 3 templates ────────────────────────────────────────────────
 insert into public.discovery_templates (id, nome, descricao, schema) values
   ('a1000000-0000-4000-8000-000000000001', 'Rede Corporativa / SD-WAN', 'Levantamento de WAN corporativa, roteamento e última milha', $json${"versao":1,"secoes":[{"id":"contexto","titulo":"Contexto","perguntas":[{"id":"sites","label":"Quantidade de sites","tipo":"number","obrigatorio":true},{"id":"saida_internet","label":"Topologia de saída de internet","tipo":"select","opcoes":["Centralizada","Distribuída","Híbrida"],"obrigatorio":true}]},{"id":"roteamento","titulo":"Roteamento","perguntas":[{"id":"protocolo","label":"Protocolo de roteamento","tipo":"select","opcoes":["OSPF","BGP","EIGRP","Estático"],"obrigatorio":true},{"id":"asn","label":"ASN público","tipo":"number","ajuda":"Aparece quando o protocolo é BGP","condicional":{"pergunta_id":"protocolo","operador":"igual","valor":"BGP"}},{"id":"mtu","label":"MTU do enlace (bytes)","tipo":"number","ajuda":"Padrão 1500"}]},{"id":"acesso","titulo":"Última milha","perguntas":[{"id":"tipo_fibra","label":"Tipo de fibra","tipo":"select","opcoes":["Monomodo","Multimodo","Não se aplica"]},{"id":"links","label":"Inventário de links","tipo":"table","colunas":[{"id":"site","label":"Site","tipo":"text"},{"id":"acesso","label":"Acesso","tipo":"select","opcoes":["Fibra","Rádio","4G/5G"]},{"id":"banda","label":"Banda","tipo":"text"}]}]},{"id":"sla","titulo":"SLA e janela","perguntas":[{"id":"sla_atual","label":"SLA atual de disponibilidade","tipo":"text"},{"id":"janela","label":"Janela de manutenção","tipo":"text","obrigatorio":true}]}]}$json$),
   ('a1000000-0000-4000-8000-000000000002', 'Conectividade e Última Milha', 'Fibra, PON e rádio: acesso, sites e SLA', $json${"versao":1,"secoes":[{"id":"acesso","titulo":"Acesso","perguntas":[{"id":"tecnologia","label":"Tecnologia de acesso","tipo":"select","opcoes":["Fibra dedicada","PON","Rádio licenciado","Rádio não-licenciado"],"obrigatorio":true},{"id":"padrao_pon","label":"Padrão PON","tipo":"select","opcoes":["GPON","XGS-PON"],"condicional":{"pergunta_id":"tecnologia","operador":"igual","valor":"PON"}},{"id":"frequencia","label":"Faixa de frequência (GHz)","tipo":"text","condicional":{"pergunta_id":"tecnologia","operador":"diferente","valor":"Fibra dedicada"}},{"id":"distancia","label":"Distância até o PoP (km)","tipo":"number"}]},{"id":"sites","titulo":"Sites","perguntas":[{"id":"lista_sites","label":"Sites e capacidades","tipo":"table","obrigatorio":true,"colunas":[{"id":"site","label":"Site","tipo":"text"},{"id":"endereco","label":"Endereço","tipo":"text"},{"id":"banda","label":"Banda contratada","tipo":"text"}]}]},{"id":"sla","titulo":"SLA","perguntas":[{"id":"disponibilidade","label":"Disponibilidade alvo (%)","tipo":"number"},{"id":"instalacao","label":"Prazo de instalação aceitável","tipo":"text"}]}]}$json$),
-  ('a1000000-0000-4000-8000-000000000003', 'Observabilidade e Segurança', 'Monitoração, segurança e continuidade (RPO/RTO)', $json${"versao":1,"secoes":[{"id":"monitoracao","titulo":"Monitoração","perguntas":[{"id":"ferramentas","label":"Ferramentas de monitoração em uso","tipo":"multiselect","opcoes":["Zabbix","PRTG","Grafana","Datadog","SolarWinds","Nenhuma"],"obrigatorio":true},{"id":"snmp","label":"Versão de SNMP","tipo":"select","opcoes":["v2c","v3","Não usa"]},{"id":"fluxo","label":"Coleta de fluxo","tipo":"select","opcoes":["NetFlow","IPFIX","sFlow","Não coleta"]}]},{"id":"seguranca","titulo":"Segurança","perguntas":[{"id":"ngfw","label":"Firewall de perímetro (NGFW)?","tipo":"boolean"},{"id":"segmentacao","label":"Estratégia de segmentação","tipo":"textarea"},{"id":"ferramentas_seg","label":"Ferramentas de segurança","tipo":"multiselect","opcoes":["EDR","SIEM","WAF","NAC","Nenhuma"]}]},{"id":"continuidade","titulo":"Continuidade","perguntas":[{"id":"rpo","label":"RPO alvo","tipo":"text","obrigatorio":true},{"id":"rto","label":"RTO alvo","tipo":"text","obrigatorio":true}]}]}$json$);
+  ('a1000000-0000-4000-8000-000000000003', 'Observabilidade e Segurança', 'Monitoração, segurança e continuidade (RPO/RTO)', $json${"versao":1,"secoes":[{"id":"monitoracao","titulo":"Monitoração","perguntas":[{"id":"ferramentas","label":"Ferramentas de monitoração em uso","tipo":"multiselect","opcoes":["Splunk","NETSCOUT nGeniusONE","ThousandEyes","Grafana","Zabbix","Datadog","Nenhuma"],"obrigatorio":true},{"id":"snmp","label":"Versão de SNMP","tipo":"select","opcoes":["v2c","v3","Não usa"]},{"id":"fluxo","label":"Coleta de fluxo","tipo":"select","opcoes":["NetFlow","IPFIX","sFlow","Não coleta"]}]},{"id":"seguranca","titulo":"Segurança","perguntas":[{"id":"ngfw","label":"Firewall de perímetro (NGFW)?","tipo":"boolean"},{"id":"segmentacao","label":"Estratégia de segmentação","tipo":"textarea"},{"id":"ferramentas_seg","label":"Ferramentas de segurança","tipo":"multiselect","opcoes":["EDR","SIEM","WAF","NAC","Nenhuma"]}]},{"id":"continuidade","titulo":"Continuidade","perguntas":[{"id":"rpo","label":"RPO alvo","tipo":"text","obrigatorio":true},{"id":"rto","label":"RTO alvo","tipo":"text","obrigatorio":true}]}]}$json$);
 
 -- ── Discovery: 2 respostas ────────────────────────────────────────────────
 insert into public.discovery_responses (id, template_id, template_versao, opportunity_id, engineer_id, answers, status, completude, resumo_md, finalizado_em) values
-  ('a2000000-0000-4000-8000-000000000001', 'a1000000-0000-4000-8000-000000000001', 1, 'e0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001',
-   $json${"sites":{"valor":24},"saida_internet":{"valor":"Centralizada"},"protocolo":{"valor":"BGP"},"asn":{"valor":64512},"mtu":{"valor":1500},"tipo_fibra":{"valor":"Monomodo"},"links":{"valor":[{"site":"Matriz SP","acesso":"Fibra","banda":"1 Gbps"},{"site":"Filial RJ","acesso":"Rádio","banda":"200 Mbps"}]},"sla_atual":{"marca":"pendente"},"janela":{"valor":"Domingos 00h-04h"}}$json$,
+  ('a2000000-0000-4000-8000-000000000001', 'a1000000-0000-4000-8000-000000000001', 1, 'e0000000-0000-4000-8000-000000000002', 'a0000000-0000-4000-8000-000000000001',
+   $json${"sites":{"valor":320},"saida_internet":{"valor":"Centralizada"},"protocolo":{"valor":"BGP"},"asn":{"valor":28573},"mtu":{"valor":1500},"tipo_fibra":{"valor":"Monomodo"},"links":{"valor":[{"site":"Matriz SP","acesso":"Fibra","banda":"1 Gbps"},{"site":"Filial RJ","acesso":"Rádio","banda":"200 Mbps"}]},"sla_atual":{"marca":"pendente"},"janela":{"valor":"Domingos 00h-04h"}}$json$,
    'rascunho', 89, null, null),
-  ('a2000000-0000-4000-8000-000000000002', 'a1000000-0000-4000-8000-000000000003', 1, 'e0000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000001',
-   $json${"ferramentas":{"valor":["Zabbix","Grafana"]},"snmp":{"valor":"v3"},"fluxo":{"valor":"IPFIX"},"ngfw":{"valor":true},"segmentacao":{"valor":"VLANs por ambiente e microssegmentação no data center."},"ferramentas_seg":{"valor":["SIEM","EDR"]},"rpo":{"valor":"15 min"},"rto":{"valor":"1 hora"}}$json$,
+  ('a2000000-0000-4000-8000-000000000002', 'a1000000-0000-4000-8000-000000000003', 1, 'e0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003',
+   $json${"ferramentas":{"valor":["Splunk","NETSCOUT nGeniusONE","Grafana"]},"snmp":{"valor":"v3"},"fluxo":{"valor":"IPFIX"},"ngfw":{"valor":true},"segmentacao":{"valor":"VLANs por ambiente e microssegmentação no data center."},"ferramentas_seg":{"valor":["SIEM","EDR"]},"rpo":{"valor":"15 min"},"rto":{"valor":"1 hora"}}$json$,
    'finalizado', 100,
-   $md$# Discovery — Observabilidade de rede
-Cliente: Nexa Varejo · Engenheiro: Ana Reis
+   $md$# Discovery — Observabilidade de backbone
+Cliente: TIM Brasil · Engenheiro: Rui Alves
 
 ## Monitoração
-- **Ferramentas de monitoração em uso:** Zabbix, Grafana
+- **Ferramentas de monitoração em uso:** Splunk, NETSCOUT nGeniusONE, Grafana
 - **Versão de SNMP:** v3
 - **Coleta de fluxo:** IPFIX
 
