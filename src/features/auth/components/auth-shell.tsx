@@ -39,7 +39,7 @@ export function AuthShell({
       <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-12">
         <div className="w-full max-w-md rise-in">
           <div className="mb-7 flex flex-col items-center gap-4 text-center">
-            <Logo size="lg" markClassName="drop-shadow-sm" />
+            <Logo size="lg" />
             <div className="flex flex-col gap-1.5">
               <h1 className="font-display text-[22px] font-semibold text-ink">{title}</h1>
               <p className="text-[13px] text-muted">{subtitle}</p>

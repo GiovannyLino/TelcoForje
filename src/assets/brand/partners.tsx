@@ -29,7 +29,7 @@ export function PartnerWordmark({ partner, className }: { partner: Partner; clas
     <span
       role="img"
       aria-label={partner.name}
-      className={cn('select-none whitespace-nowrap text-[19px] leading-none', partner.className, className)}
+      className={cn('select-none whitespace-nowrap text-[30px] leading-none', partner.className, className)}
     >
       {partner.text}
     </span>

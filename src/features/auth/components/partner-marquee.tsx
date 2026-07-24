@@ -32,7 +32,7 @@ export function PartnerMarquee() {
   const metade = Math.ceil(PARTNERS.length / 2)
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-0 flex flex-col justify-center gap-10 text-ink/7 dark:text-ink/10"
+      className="pointer-events-none absolute inset-0 z-0 flex flex-col justify-between py-[14vh] text-ink/12 dark:text-ink/20"
       aria-hidden
     >
       <Row partners={PARTNERS.slice(0, metade)} dur="55s" />

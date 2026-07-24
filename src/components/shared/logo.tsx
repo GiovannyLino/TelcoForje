@@ -1,57 +1,65 @@
-import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { cn } from '@/lib/utils'
-import { APP_NAME } from '@/lib/constants'
-import { LogicalisMark } from '@/assets/brand/logicalis-mark'
+import { LogicalisLogo } from '@/assets/brand/logicalis-logo'
 import { ease } from '@/lib/motion'
 
 const sizes = {
-  sm: { mark: 'size-6', text: 'text-[16px]', gap: 'gap-2' },
-  lg: { mark: 'size-11', text: 'text-[26px]', gap: 'gap-2.5' },
+  sm: { slot: 'h-9 w-[140px]', ribbon: 'h-4', word: 'text-[8px]', name: 'text-[17px]' },
+  lg: { slot: 'h-16 w-[230px]', ribbon: 'h-9', word: 'text-[14px]', name: 'text-[30px]' },
 } as const
 
 /**
- * Marca animada: primeiro surge o mark da Logicalis, depois o wordmark
- * "TelcoForge" se revela ao lado (wipe da esquerda p/ direita) e permanece.
- * Respeita prefers-reduced-motion via <MotionConfig reducedMotion="user">
- * (nesse caso o estado final aparece direto).
+ * Carrossel da marca: alterna, em loop, entre o logo da Logicalis e o nome
+ * "TelcoForge" (cross-fade vertical). Respeita prefers-reduced-motion — nesse
+ * caso não fica trocando e mostra o logo da Logicalis fixo.
  */
-export function Logo({
-  className,
-  showWordmark = true,
-  markClassName,
-  size = 'sm',
-}: {
-  className?: string
-  showWordmark?: boolean
-  markClassName?: string
-  size?: 'sm' | 'lg'
-}) {
+export function Logo({ size = 'sm', className }: { size?: 'sm' | 'lg'; className?: string }) {
   const s = sizes[size]
+  const reduce = useReducedMotion()
+  const [showName, setShowName] = useState(false)
+
+  useEffect(() => {
+    if (reduce) return
+    const id = setInterval(() => setShowName((v) => !v), 2600)
+    return () => clearInterval(id)
+  }, [reduce])
+
   return (
-    <span className={cn('inline-flex items-center', s.gap, className)}>
-      <motion.span
-        className="inline-flex shrink-0"
-        initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
-        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-        transition={{ duration: 0.45, ease }}
-      >
-        <LogicalisMark className={cn(s.mark, markClassName)} />
-      </motion.span>
-      {showWordmark ? (
-        <motion.span
-          className={cn(
-            'whitespace-nowrap font-display font-semibold tracking-tight text-ink',
-            s.text,
-          )}
-          initial={{ opacity: 0, x: -8, clipPath: 'inset(0 100% 0 0)' }}
-          animate={{ opacity: 1, x: 0, clipPath: 'inset(0 0% 0 0)' }}
-          transition={{ delay: 0.5, duration: 0.5, ease }}
-        >
-          Telco<span className="text-signal">Forge</span>
-        </motion.span>
-      ) : (
-        <span className="sr-only">{APP_NAME}</span>
-      )}
+    <span
+      className={cn('relative inline-flex items-center justify-center', s.slot, className)}
+      role="img"
+      aria-label="TelcoForge — Logicalis"
+    >
+      <AnimatePresence initial={false} mode="wait">
+        {showName ? (
+          <motion.span
+            key="name"
+            aria-hidden
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0, y: 9 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -9 }}
+            transition={{ duration: 0.4, ease }}
+          >
+            <span className={cn('font-display font-semibold tracking-tight text-ink', s.name)}>
+              Telco<span className="text-signal">Forge</span>
+            </span>
+          </motion.span>
+        ) : (
+          <motion.span
+            key="logo"
+            aria-hidden
+            className="absolute inset-0 flex items-center justify-center"
+            initial={{ opacity: 0, y: 9 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -9 }}
+            transition={{ duration: 0.4, ease }}
+          >
+            <LogicalisLogo ribbonClassName={s.ribbon} wordClassName={s.word} />
+          </motion.span>
+        )}
+      </AnimatePresence>
     </span>
   )
 }
