@@ -102,6 +102,106 @@ export type Database = {
           },
         ]
       }
+      discovery_responses: {
+        Row: {
+          answers: Json
+          completude: number
+          created_at: string
+          engineer_id: string
+          finalizado_em: string | null
+          id: string
+          opportunity_id: string
+          resumo_md: string | null
+          status: Database["public"]["Enums"]["discovery_status"]
+          template_id: string
+          template_versao: number
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json
+          completude?: number
+          created_at?: string
+          engineer_id: string
+          finalizado_em?: string | null
+          id?: string
+          opportunity_id: string
+          resumo_md?: string | null
+          status?: Database["public"]["Enums"]["discovery_status"]
+          template_id: string
+          template_versao: number
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json
+          completude?: number
+          created_at?: string
+          engineer_id?: string
+          finalizado_em?: string | null
+          id?: string
+          opportunity_id?: string
+          resumo_md?: string | null
+          status?: Database["public"]["Enums"]["discovery_status"]
+          template_id?: string
+          template_versao?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discovery_responses_engineer_id_fkey"
+            columns: ["engineer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discovery_responses_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discovery_responses_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "discovery_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discovery_templates: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          id: string
+          is_active: boolean
+          nome: string
+          schema: Json
+          updated_at: string
+          versao: number
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          is_active?: boolean
+          nome: string
+          schema: Json
+          updated_at?: string
+          versao?: number
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          id?: string
+          is_active?: boolean
+          nome?: string
+          schema?: Json
+          updated_at?: string
+          versao?: number
+        }
+        Relationships: []
+      }
       documents: {
         Row: {
           author_id: string | null
@@ -615,6 +715,7 @@ export type Database = {
       pode_ler_pasta: { Args: { f_id: string }; Returns: boolean }
     }
     Enums: {
+      discovery_status: "rascunho" | "finalizado"
       folder_visibility: "private" | "team"
       notice_tipo: "aviso" | "manutencao" | "vencimento" | "incidente"
       prioridade: "baixa" | "media" | "alta" | "critica"
@@ -759,6 +860,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      discovery_status: ["rascunho", "finalizado"],
       folder_visibility: ["private", "team"],
       notice_tipo: ["aviso", "manutencao", "vencimento", "incidente"],
       prioridade: ["baixa", "media", "alta", "critica"],

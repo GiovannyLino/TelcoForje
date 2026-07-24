@@ -170,3 +170,35 @@ insert into public.notices (id, author_id, tipo, corpo, pinned, resource_id, exp
 
 -- Gera os avisos de vencimento automáticos (DNA Center, Conta demo AWS…).
 select public.gerar_avisos_vencimento();
+
+-- ── Discovery: 3 templates ────────────────────────────────────────────────
+insert into public.discovery_templates (id, nome, descricao, schema) values
+  ('a1000000-0000-4000-8000-000000000001', 'Rede Corporativa / SD-WAN', 'Levantamento de WAN corporativa, roteamento e última milha', $json${"versao":1,"secoes":[{"id":"contexto","titulo":"Contexto","perguntas":[{"id":"sites","label":"Quantidade de sites","tipo":"number","obrigatorio":true},{"id":"saida_internet","label":"Topologia de saída de internet","tipo":"select","opcoes":["Centralizada","Distribuída","Híbrida"],"obrigatorio":true}]},{"id":"roteamento","titulo":"Roteamento","perguntas":[{"id":"protocolo","label":"Protocolo de roteamento","tipo":"select","opcoes":["OSPF","BGP","EIGRP","Estático"],"obrigatorio":true},{"id":"asn","label":"ASN público","tipo":"number","ajuda":"Aparece quando o protocolo é BGP","condicional":{"pergunta_id":"protocolo","operador":"igual","valor":"BGP"}},{"id":"mtu","label":"MTU do enlace (bytes)","tipo":"number","ajuda":"Padrão 1500"}]},{"id":"acesso","titulo":"Última milha","perguntas":[{"id":"tipo_fibra","label":"Tipo de fibra","tipo":"select","opcoes":["Monomodo","Multimodo","Não se aplica"]},{"id":"links","label":"Inventário de links","tipo":"table","colunas":[{"id":"site","label":"Site","tipo":"text"},{"id":"acesso","label":"Acesso","tipo":"select","opcoes":["Fibra","Rádio","4G/5G"]},{"id":"banda","label":"Banda","tipo":"text"}]}]},{"id":"sla","titulo":"SLA e janela","perguntas":[{"id":"sla_atual","label":"SLA atual de disponibilidade","tipo":"text"},{"id":"janela","label":"Janela de manutenção","tipo":"text","obrigatorio":true}]}]}$json$),
+  ('a1000000-0000-4000-8000-000000000002', 'Conectividade e Última Milha', 'Fibra, PON e rádio: acesso, sites e SLA', $json${"versao":1,"secoes":[{"id":"acesso","titulo":"Acesso","perguntas":[{"id":"tecnologia","label":"Tecnologia de acesso","tipo":"select","opcoes":["Fibra dedicada","PON","Rádio licenciado","Rádio não-licenciado"],"obrigatorio":true},{"id":"padrao_pon","label":"Padrão PON","tipo":"select","opcoes":["GPON","XGS-PON"],"condicional":{"pergunta_id":"tecnologia","operador":"igual","valor":"PON"}},{"id":"frequencia","label":"Faixa de frequência (GHz)","tipo":"text","condicional":{"pergunta_id":"tecnologia","operador":"diferente","valor":"Fibra dedicada"}},{"id":"distancia","label":"Distância até o PoP (km)","tipo":"number"}]},{"id":"sites","titulo":"Sites","perguntas":[{"id":"lista_sites","label":"Sites e capacidades","tipo":"table","obrigatorio":true,"colunas":[{"id":"site","label":"Site","tipo":"text"},{"id":"endereco","label":"Endereço","tipo":"text"},{"id":"banda","label":"Banda contratada","tipo":"text"}]}]},{"id":"sla","titulo":"SLA","perguntas":[{"id":"disponibilidade","label":"Disponibilidade alvo (%)","tipo":"number"},{"id":"instalacao","label":"Prazo de instalação aceitável","tipo":"text"}]}]}$json$),
+  ('a1000000-0000-4000-8000-000000000003', 'Observabilidade e Segurança', 'Monitoração, segurança e continuidade (RPO/RTO)', $json${"versao":1,"secoes":[{"id":"monitoracao","titulo":"Monitoração","perguntas":[{"id":"ferramentas","label":"Ferramentas de monitoração em uso","tipo":"multiselect","opcoes":["Zabbix","PRTG","Grafana","Datadog","SolarWinds","Nenhuma"],"obrigatorio":true},{"id":"snmp","label":"Versão de SNMP","tipo":"select","opcoes":["v2c","v3","Não usa"]},{"id":"fluxo","label":"Coleta de fluxo","tipo":"select","opcoes":["NetFlow","IPFIX","sFlow","Não coleta"]}]},{"id":"seguranca","titulo":"Segurança","perguntas":[{"id":"ngfw","label":"Firewall de perímetro (NGFW)?","tipo":"boolean"},{"id":"segmentacao","label":"Estratégia de segmentação","tipo":"textarea"},{"id":"ferramentas_seg","label":"Ferramentas de segurança","tipo":"multiselect","opcoes":["EDR","SIEM","WAF","NAC","Nenhuma"]}]},{"id":"continuidade","titulo":"Continuidade","perguntas":[{"id":"rpo","label":"RPO alvo","tipo":"text","obrigatorio":true},{"id":"rto","label":"RTO alvo","tipo":"text","obrigatorio":true}]}]}$json$);
+
+-- ── Discovery: 2 respostas ────────────────────────────────────────────────
+insert into public.discovery_responses (id, template_id, template_versao, opportunity_id, engineer_id, answers, status, completude, resumo_md, finalizado_em) values
+  ('a2000000-0000-4000-8000-000000000001', 'a1000000-0000-4000-8000-000000000001', 1, 'e0000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001',
+   $json${"sites":{"valor":24},"saida_internet":{"valor":"Centralizada"},"protocolo":{"valor":"BGP"},"asn":{"valor":64512},"mtu":{"valor":1500},"tipo_fibra":{"valor":"Monomodo"},"links":{"valor":[{"site":"Matriz SP","acesso":"Fibra","banda":"1 Gbps"},{"site":"Filial RJ","acesso":"Rádio","banda":"200 Mbps"}]},"sla_atual":{"marca":"pendente"},"janela":{"valor":"Domingos 00h-04h"}}$json$,
+   'rascunho', 89, null, null),
+  ('a2000000-0000-4000-8000-000000000002', 'a1000000-0000-4000-8000-000000000003', 1, 'e0000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000001',
+   $json${"ferramentas":{"valor":["Zabbix","Grafana"]},"snmp":{"valor":"v3"},"fluxo":{"valor":"IPFIX"},"ngfw":{"valor":true},"segmentacao":{"valor":"VLANs por ambiente e microssegmentação no data center."},"ferramentas_seg":{"valor":["SIEM","EDR"]},"rpo":{"valor":"15 min"},"rto":{"valor":"1 hora"}}$json$,
+   'finalizado', 100,
+   $md$# Discovery — Observabilidade de rede
+Cliente: Nexa Varejo · Engenheiro: Ana Reis
+
+## Monitoração
+- **Ferramentas de monitoração em uso:** Zabbix, Grafana
+- **Versão de SNMP:** v3
+- **Coleta de fluxo:** IPFIX
+
+## Segurança
+- **Firewall de perímetro (NGFW)?:** Sim
+- **Estratégia de segmentação:** VLANs por ambiente e microssegmentação no data center.
+- **Ferramentas de segurança:** SIEM, EDR
+
+## Continuidade
+- **RPO alvo:** 15 min
+- **RTO alvo:** 1 hora
+$md$, now());

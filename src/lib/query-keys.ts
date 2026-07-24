@@ -46,6 +46,12 @@ export const qk = {
     all: ['notices'] as const,
     list: () => ['notices', 'list'] as const,
   },
+  discovery: {
+    templates: () => ['discovery', 'templates'] as const,
+    responses: () => ['discovery', 'responses'] as const,
+    response: (id: string) => ['discovery', 'response', id] as const,
+    byOpportunity: (oppId: string) => ['discovery', 'opp', oppId] as const,
+  },
   activity: {
     byOpportunity: (oppId: string) => ['activity', 'opp', oppId] as const,
   },

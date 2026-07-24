@@ -111,3 +111,26 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 - Fuso: reservas do seed usam `current_date` do banco (UTC) e aparecem ~3h deslocadas no fuso SP — cosmético, não afeta a constraint.
 - Criação por seleção de intervalo na faixa e arrastar-para-reagendar ficam como acabamento (hoje via diálogo).
 - Vínculo reserva↔oportunidade existe no schema; o seletor no diálogo do Lab fica para acabamento (suportado via prop).
+
+---
+
+## Fase 5 — Discovery ✅
+
+**Banco**
+- `discovery_templates` (schema jsonb versionado) e `discovery_responses` (answers jsonb, completude, resumo_md, status). RLS: templates só admin escreve; respostas por engenheiro responsável ou admin.
+- Seed: 3 templates reais (SD-WAN, Última Milha, Observabilidade+Segurança) com perguntas de verdade; 2 respostas (1 rascunho, 1 finalizada).
+
+**Lógica de negócio (testada com Vitest — 11 testes)**
+- Lógica condicional (mostrar pergunta B se A = valor), perguntas visíveis, completude ("não se aplica" conta, "pendente" não), pendências e geração do resumo Markdown. + helper de sobreposição de reservas.
+
+**UI**
+- Renderizador dirigido por schema: text, textarea, number, select, multiselect, boolean, date e **tabela dinâmica**; marcar "não se aplica"/"pendente".
+- Preenchimento em reunião: navegação por seção, **autosave 2s com indicador "salvo"**, barra de completude, lógica condicional ao vivo.
+- Ao finalizar: **resumo técnico** (Markdown renderizado) por seção com pendências destacadas; **Copiar como Markdown** e **Exportar PDF** (`@react-pdf/renderer`, no cliente, lazy-loaded).
+- Listagem por cliente e engenheiro; aba Discovery dentro da oportunidade.
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅ · test ✅ (11/11).
+
+**Notas**
+- PDF usa fontes nativas (Helvetica/Courier) para robustez; fontes do produto no PDF ficam como acabamento.
+- Reabrir discovery finalizado para editar fica como acabamento (hoje é somente leitura + resumo/PDF).

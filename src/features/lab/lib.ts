@@ -50,6 +50,11 @@ export function periodoFromLocal(inicio: string, fim: string): string {
   return `[${localToUtcIso(inicio)},${localToUtcIso(fim)})`
 }
 
+/** Sobreposição de intervalos meio-abertos [ini, fim) — mesma regra do EXCLUDE do banco. */
+export function intervalosSobrepoem(aIni: Date, aFim: Date, bIni: Date, bFim: Date): boolean {
+  return aIni < bFim && bIni < aFim
+}
+
 /** Formata uma data (UTC) como valor de <input type="datetime-local"> no fuso do produto. */
 export function toLocalInput(d: Date): string {
   return format(toZonedTime(d, TIMEZONE), "yyyy-MM-dd'T'HH:mm")

@@ -12,6 +12,8 @@ import { TemplatesPage } from '@/features/templates/pages/templates-page'
 import { TemplateEditorPage } from '@/features/templates/pages/template-editor-page'
 import { BoardPage } from '@/features/board/pages/board-page'
 import { LabPage } from '@/features/lab/pages/lab-page'
+import { DiscoveryListPage } from '@/features/discovery/pages/discovery-list-page'
+import { DiscoveryFillPage } from '@/features/discovery/pages/discovery-fill-page'
 
 export const router = createBrowserRouter([
   {
@@ -45,15 +47,8 @@ export const router = createBrowserRouter([
       { path: '/oportunidades/:id', element: <OpportunityDetailPage /> },
       { path: '/kanban', element: <BoardPage /> },
       { path: '/lab', element: <LabPage /> },
-      {
-        path: '/discovery',
-        element: (
-          <Placeholder
-            title="Discovery"
-            descricao="Formulários dirigidos por schema chegam na Fase 5."
-          />
-        ),
-      },
+      { path: '/discovery', element: <DiscoveryListPage /> },
+      { path: '/discovery/:id', element: <DiscoveryFillPage /> },
       { path: '/templates', element: <TemplatesPage /> },
       { path: '/templates/novo', element: <TemplateEditorPage /> },
       { path: '/templates/:id', element: <TemplateEditorPage /> },

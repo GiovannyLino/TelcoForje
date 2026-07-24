@@ -35,6 +35,7 @@ import { useBoardColumns, useDeleteOpportunity, useOpportunity, useUpdateOpportu
 import { dueStatus, prioridadeLabel, prioridadeTone } from '../lib'
 import { formatDateOnly } from '@/lib/format'
 import { WorkspacePanel } from '@/features/workspace/components/workspace-panel'
+import { OppDiscoveries } from '@/features/discovery/components/opp-discoveries'
 import { useDocumentsByOpportunity } from '@/features/documents/hooks'
 
 function OppDocumentos({ oppId }: { oppId: string }) {
@@ -193,10 +194,7 @@ export function OpportunityDetailPage() {
               <OppDocumentos oppId={o.id} />
             </TabsContent>
             <TabsContent value="discoveries">
-              <EmptyState
-                title="Discovery chega na Fase 5"
-                description="Aqui vão os checklists técnicos preenchidos em reunião."
-              />
+              <OppDiscoveries oppId={o.id} />
             </TabsContent>
             <TabsContent value="reservas">
               <EmptyState
