@@ -17,7 +17,7 @@ export function DropdownMenuContent({
         sideOffset={sideOffset}
         align={align}
         className={cn(
-          'z-50 min-w-44 overflow-hidden rounded-md border border-line bg-surface p-1 shadow-lg',
+          'menu-in glass-strong z-50 min-w-44 origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-lg p-1',
           className,
         )}
         {...props}

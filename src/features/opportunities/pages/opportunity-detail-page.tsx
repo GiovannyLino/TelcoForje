@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
-import { ArrowLeft, FileText, MoreHorizontal, Trash2 } from 'lucide-react'
+import { Activity, ArrowLeft, CalendarClock, FileText, MoreHorizontal, Trash2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -37,6 +37,11 @@ import { formatDateOnly } from '@/lib/format'
 import { WorkspacePanel } from '@/features/workspace/components/workspace-panel'
 import { OppDiscoveries } from '@/features/discovery/components/opp-discoveries'
 import { useDocumentsByOpportunity } from '@/features/documents/hooks'
+import { useReservations } from '@/features/lab/hooks'
+import { parseRange } from '@/features/lab/lib'
+import { useActivityByOpportunity, frase } from '@/features/activity/hooks'
+import { StatusPill, type StatusTone } from '@/components/shared/status-pill'
+import { formatDateTime, formatRelative } from '@/lib/format'
 
 function OppDocumentos({ oppId }: { oppId: string }) {
   const docs = useDocumentsByOpportunity(oppId)
@@ -58,6 +63,85 @@ function OppDocumentos({ oppId }: { oppId: string }) {
           className="rounded-md border border-line bg-surface px-3 py-2 text-[13px] text-ink"
         >
           {d.titulo}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+const reservaTone: Record<string, StatusTone> = {
+  ativa: 'signal',
+  concluida: 'live',
+  cancelada: 'neutral',
+}
+const reservaLabel: Record<string, string> = {
+  ativa: 'Ativa',
+  concluida: 'Concluída',
+  cancelada: 'Cancelada',
+}
+
+function OppReservas({ oppId }: { oppId: string }) {
+  const reservas = useReservations()
+  if (reservas.isLoading) return <Skeleton className="h-24" />
+  const doOpp = (reservas.data ?? []).filter((r) => r.opportunity_id === oppId)
+  if (doOpp.length === 0) {
+    return (
+      <EmptyState
+        icon={<CalendarClock />}
+        title="Nenhuma reserva"
+        description="Reserve recursos de laboratório para esta demanda na aba Lab & recursos."
+      />
+    )
+  }
+  return (
+    <ul className="flex flex-col gap-2">
+      {doOpp.map((r) => {
+        const [ini, fim] = parseRange(r.periodo)
+        return (
+          <li
+            key={r.id}
+            className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-line bg-surface/60 px-3 py-2 text-[13px]"
+          >
+            <div className="flex flex-col">
+              <span className="text-ink">{r.resource?.nome ?? '—'}</span>
+              {r.finalidade ? <span className="text-[12px] text-muted">{r.finalidade}</span> : null}
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-[12px] text-muted">
+                {formatDateTime(ini)} → {formatDateTime(fim)}
+              </span>
+              <StatusPill tone={reservaTone[r.status] ?? 'neutral'}>
+                {reservaLabel[r.status] ?? r.status}
+              </StatusPill>
+            </div>
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+function OppAtividade({ oppId }: { oppId: string }) {
+  const atividade = useActivityByOpportunity(oppId)
+  if (atividade.isLoading) return <Skeleton className="h-24" />
+  if (!atividade.data || atividade.data.length === 0) {
+    return (
+      <EmptyState
+        icon={<Activity />}
+        title="Sem atividade ainda"
+        description="As ações do time nesta oportunidade aparecerão aqui."
+      />
+    )
+  }
+  return (
+    <ul className="flex flex-col gap-3">
+      {atividade.data.map((a) => (
+        <li key={a.id} className="flex items-start gap-2.5 text-[13px]">
+          <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-signal" aria-hidden />
+          <div className="flex flex-col">
+            <span className="text-ink">{frase(a)}</span>
+            <span className="text-[11px] text-muted">{formatRelative(a.created_at)}</span>
+          </div>
         </li>
       ))}
     </ul>
@@ -197,16 +281,10 @@ export function OpportunityDetailPage() {
               <OppDiscoveries oppId={o.id} />
             </TabsContent>
             <TabsContent value="reservas">
-              <EmptyState
-                title="Reservas chegam na Fase 4"
-                description="Os recursos de laboratório reservados para a demo aparecem aqui."
-              />
+              <OppReservas oppId={o.id} />
             </TabsContent>
             <TabsContent value="atividade">
-              <EmptyState
-                title="Linha do tempo chega na Fase 6"
-                description="O histórico de atividade do time nesta oportunidade."
-              />
+              <OppAtividade oppId={o.id} />
             </TabsContent>
           </Tabs>
         </div>
