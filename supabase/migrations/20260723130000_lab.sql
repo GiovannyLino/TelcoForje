@@ -1,6 +1,9 @@
 -- Fase 4 — Lab: recursos, reservas (sem sobreposição garantida pelo banco), mural.
 
-create extension if not exists btree_gist;
+-- btree_gist no schema 'extensions' (evita poluir o public e o advisor de search_path).
+create extension if not exists btree_gist with schema extensions;
+-- garante que o opclass gist do btree_gist seja encontrado ao criar o EXCLUDE.
+set search_path = public, extensions;
 
 create type resource_tipo as enum (
   'licenca', 'servidor_lab', 'porta_switch', 'conta_demo', 'credito_nuvem', 'equipamento'
