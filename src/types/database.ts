@@ -298,6 +298,57 @@ export type Database = {
           },
         ]
       }
+      notices: {
+        Row: {
+          author_id: string | null
+          corpo: string
+          created_at: string
+          expires_at: string | null
+          id: string
+          pinned: boolean
+          resource_id: string | null
+          tipo: Database["public"]["Enums"]["notice_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          author_id?: string | null
+          corpo: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pinned?: boolean
+          resource_id?: string | null
+          tipo?: Database["public"]["Enums"]["notice_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string | null
+          corpo?: string
+          created_at?: string
+          expires_at?: string | null
+          id?: string
+          pinned?: boolean
+          resource_id?: string | null
+          tipo?: Database["public"]["Enums"]["notice_tipo"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notices_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "notices_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       opportunities: {
         Row: {
           client_id: string
@@ -401,6 +452,111 @@ export type Database = {
         }
         Relationships: []
       }
+      reservations: {
+        Row: {
+          created_at: string
+          finalidade: string | null
+          id: string
+          opportunity_id: string | null
+          periodo: unknown
+          resource_id: string
+          status: Database["public"]["Enums"]["reservation_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          finalidade?: string | null
+          id?: string
+          opportunity_id?: string | null
+          periodo: unknown
+          resource_id: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          finalidade?: string | null
+          id?: string
+          opportunity_id?: string | null
+          periodo?: unknown
+          resource_id?: string
+          status?: Database["public"]["Enums"]["reservation_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_resource_id_fkey"
+            columns: ["resource_id"]
+            isOneToOne: false
+            referencedRelation: "resources"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          created_at: string
+          descricao: string | null
+          expira_em: string | null
+          id: string
+          metadata: Json
+          nome: string
+          responsavel_id: string | null
+          status: Database["public"]["Enums"]["resource_status"]
+          tipo: Database["public"]["Enums"]["resource_tipo"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          descricao?: string | null
+          expira_em?: string | null
+          id?: string
+          metadata?: Json
+          nome: string
+          responsavel_id?: string | null
+          status?: Database["public"]["Enums"]["resource_status"]
+          tipo: Database["public"]["Enums"]["resource_tipo"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          descricao?: string | null
+          expira_em?: string | null
+          id?: string
+          metadata?: Json
+          nome?: string
+          responsavel_id?: string | null
+          status?: Database["public"]["Enums"]["resource_status"]
+          tipo?: Database["public"]["Enums"]["resource_tipo"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_responsavel_id_fkey"
+            columns: ["responsavel_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       templates: {
         Row: {
           author_id: string | null
@@ -453,13 +609,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      gerar_avisos_vencimento: { Args: never; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
       pode_escrever_pasta: { Args: { f_id: string }; Returns: boolean }
       pode_ler_pasta: { Args: { f_id: string }; Returns: boolean }
     }
     Enums: {
       folder_visibility: "private" | "team"
+      notice_tipo: "aviso" | "manutencao" | "vencimento" | "incidente"
       prioridade: "baixa" | "media" | "alta" | "critica"
+      reservation_status: "ativa" | "concluida" | "cancelada"
+      resource_status: "disponivel" | "manutencao" | "baixado"
+      resource_tipo:
+        | "licenca"
+        | "servidor_lab"
+        | "porta_switch"
+        | "conta_demo"
+        | "credito_nuvem"
+        | "equipamento"
       template_tipo: "rfp" | "poc" | "proposta" | "topologia"
       user_role: "admin" | "engenheiro" | "leitor"
     }
@@ -593,7 +760,18 @@ export const Constants = {
   public: {
     Enums: {
       folder_visibility: ["private", "team"],
+      notice_tipo: ["aviso", "manutencao", "vencimento", "incidente"],
       prioridade: ["baixa", "media", "alta", "critica"],
+      reservation_status: ["ativa", "concluida", "cancelada"],
+      resource_status: ["disponivel", "manutencao", "baixado"],
+      resource_tipo: [
+        "licenca",
+        "servidor_lab",
+        "porta_switch",
+        "conta_demo",
+        "credito_nuvem",
+        "equipamento",
+      ],
       template_tipo: ["rfp", "poc", "proposta", "topologia"],
       user_role: ["admin", "engenheiro", "leitor"],
     },

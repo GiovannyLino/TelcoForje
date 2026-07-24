@@ -87,3 +87,27 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 - Falha ao mover reverte o card e mostra toast — a RLS só permite mover oportunidades das quais você é dono (admin move todas).
 
 **Verificação:** typecheck ✅ · lint ✅ · build ✅. Persistência confirmada via API (PATCH 204 → releitura mantém coluna/posição). Rollback visual coberto pelo E2E na Fase 6.
+
+---
+
+## Fase 4 — Lab & Recursos ✅
+
+**Banco**
+- Tabelas `resources`, `reservations`, `notices` (+ enums). RLS: recursos só admin escreve; reservas e recados por dono ou admin.
+- **Não-sobreposição garantida pelo banco**: `EXCLUDE USING gist (resource_id WITH =, periodo WITH &&) WHERE status <> 'cancelada'` (extensão `btree_gist`).
+- Vencimento automático: `gerar_avisos_vencimento()` (idempotente) agendada por `pg_cron` (best-effort); o badge é query ao vivo e não depende do cron.
+
+**Constraint provada:** inserir reserva com período idêntico ao de uma existente → `ERROR: conflicting key value violates exclusion constraint "reservations_sem_sobreposicao"`.
+
+**UI**
+- Inventário: recursos por tipo/status, metadata monoespaçada, expiração, e a **faixa de ocupação (mini)** por recurso.
+- Calendário semanal: uma linha por recurso com a **faixa de ocupação (completa)** + marcador "agora".
+- Reserva com **detecção de conflito**: ao receber o erro do banco, busca a reserva sobreposta e mostra quem reservou e até quando.
+- Meus recursos: reservas com reagendar/cancelar. Mural: recados por tipo, fixar/expirar, com os avisos de vencimento gerados automaticamente.
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅. Seed: 12 recursos, 9 reservas, 8 recados.
+
+**Notas / pendências declaradas**
+- Fuso: reservas do seed usam `current_date` do banco (UTC) e aparecem ~3h deslocadas no fuso SP — cosmético, não afeta a constraint.
+- Criação por seleção de intervalo na faixa e arrastar-para-reagendar ficam como acabamento (hoje via diálogo).
+- Vínculo reserva↔oportunidade existe no schema; o seletor no diálogo do Lab fica para acabamento (suportado via prop).

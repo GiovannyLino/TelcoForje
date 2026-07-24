@@ -11,6 +11,7 @@ import { OpportunityDetailPage } from '@/features/opportunities/pages/opportunit
 import { TemplatesPage } from '@/features/templates/pages/templates-page'
 import { TemplateEditorPage } from '@/features/templates/pages/template-editor-page'
 import { BoardPage } from '@/features/board/pages/board-page'
+import { LabPage } from '@/features/lab/pages/lab-page'
 
 export const router = createBrowserRouter([
   {
@@ -43,15 +44,7 @@ export const router = createBrowserRouter([
       { path: '/oportunidades', element: <OpportunitiesPage /> },
       { path: '/oportunidades/:id', element: <OpportunityDetailPage /> },
       { path: '/kanban', element: <BoardPage /> },
-      {
-        path: '/lab',
-        element: (
-          <Placeholder
-            title="Lab & recursos"
-            descricao="Inventário, calendário e faixa de ocupação chegam na Fase 4."
-          />
-        ),
-      },
+      { path: '/lab', element: <LabPage /> },
       {
         path: '/discovery',
         element: (

@@ -131,3 +131,42 @@ Validar failover e steering por aplicação nos 3 sites piloto da ACME.
 - [ ] Failover < 1 s no enlace primário
 - [ ] Voz priorizada sobre o link de backup
 $md$, 'a0000000-0000-4000-8000-000000000001');
+
+-- ── Recursos (12, tipos variados) ─────────────────────────────────────────
+insert into public.resources (id, tipo, nome, descricao, status, metadata, expira_em, responsavel_id) values
+  ('10000000-0000-4000-8000-000000000001', 'licenca', 'Cisco DNA Center', 'Licença de laboratório', 'disponivel', '{"vendor":"Cisco","edicao":"Advantage"}', current_date + 5, 'a0000000-0000-4000-8000-000000000001'),
+  ('10000000-0000-4000-8000-000000000002', 'licenca', 'Fortinet FortiManager', 'Gestão centralizada', 'disponivel', '{"vendor":"Fortinet"}', current_date + 20, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-000000000003', 'servidor_lab', 'Lab-rack R12', 'Servidor ESXi do rack R12', 'disponivel', '{"rack":"R12","cpu":"2x Xeon","ram":"256GB"}', null, 'a0000000-0000-4000-8000-000000000002'),
+  ('10000000-0000-4000-8000-000000000004', 'servidor_lab', 'Lab-rack R7', 'Servidor ESXi do rack R7', 'manutencao', '{"rack":"R7"}', null, null),
+  ('10000000-0000-4000-8000-000000000005', 'porta_switch', 'Gi1/0/24', 'Porta de acesso do switch de lab', 'disponivel', '{"vendor":"Cisco","modelo":"C9300","rack":"R12","porta":"Gi1/0/24"}', null, 'a0000000-0000-4000-8000-000000000002'),
+  ('10000000-0000-4000-8000-000000000006', 'porta_switch', 'Te1/1/1', 'Uplink 10G', 'disponivel', '{"vendor":"Cisco","modelo":"C9500","porta":"Te1/1/1"}', null, null),
+  ('10000000-0000-4000-8000-000000000007', 'conta_demo', 'Conta demo AWS', 'Sandbox AWS para PoCs', 'disponivel', '{"provider":"AWS","conta":"1234-5678"}', current_date + 3, 'a0000000-0000-4000-8000-000000000001'),
+  ('10000000-0000-4000-8000-000000000008', 'conta_demo', 'Conta demo Azure', 'Sandbox Azure', 'disponivel', '{"provider":"Azure"}', current_date + 25, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-000000000009', 'credito_nuvem', 'Créditos GCP', 'Créditos para labs', 'disponivel', '{"provider":"GCP","saldo":"USD 500"}', current_date + 40, null),
+  ('10000000-0000-4000-8000-00000000000a', 'credito_nuvem', 'Créditos OCI', 'Créditos Oracle Cloud', 'disponivel', '{"provider":"OCI","saldo":"USD 300"}', null, null),
+  ('10000000-0000-4000-8000-00000000000b', 'equipamento', 'Roteador C8300', 'Roteador de borda para bancada', 'disponivel', '{"vendor":"Cisco","modelo":"C8300-1N1S"}', null, 'a0000000-0000-4000-8000-000000000003'),
+  ('10000000-0000-4000-8000-00000000000c', 'equipamento', 'AP Wi-Fi 6E', 'Access point de teste', 'baixado', '{"vendor":"Cisco","modelo":"C9166"}', null, null);
+
+-- ── Reservas (ao longo de ~2 semanas, sem sobreposição por recurso) ───────
+insert into public.reservations (id, resource_id, user_id, opportunity_id, periodo, finalidade) values
+  ('20000000-0000-4000-8000-000000000001', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000001', tstzrange((current_date)::timestamptz + interval '9 hours', (current_date)::timestamptz + interval '15 hours'), 'PoC SD-WAN ACME'),
+  ('20000000-0000-4000-8000-000000000002', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', null, tstzrange((current_date + 2)::timestamptz + interval '9 hours', (current_date + 2)::timestamptz + interval '12 hours'), 'Testes de licença'),
+  ('20000000-0000-4000-8000-000000000003', '10000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'e0000000-0000-4000-8000-000000000006', tstzrange((current_date + 1)::timestamptz + interval '14 hours', (current_date + 1)::timestamptz + interval '18 hours'), 'Lab de segurança'),
+  ('20000000-0000-4000-8000-000000000004', '10000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000001', null, tstzrange((current_date + 4)::timestamptz + interval '9 hours', (current_date + 4)::timestamptz + interval '17 hours'), 'Preparação de demo'),
+  ('20000000-0000-4000-8000-000000000005', '10000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000002', 'e0000000-0000-4000-8000-000000000002', tstzrange((current_date + 1)::timestamptz + interval '10 hours', (current_date + 1)::timestamptz + interval '12 hours'), 'Conectividade última milha'),
+  ('20000000-0000-4000-8000-000000000006', '10000000-0000-4000-8000-000000000007', 'a0000000-0000-4000-8000-000000000001', 'e0000000-0000-4000-8000-000000000005', tstzrange((current_date)::timestamptz + interval '8 hours', (current_date + 3)::timestamptz + interval '20 hours'), 'Landing zone'),
+  ('20000000-0000-4000-8000-000000000007', '10000000-0000-4000-8000-00000000000b', 'a0000000-0000-4000-8000-000000000003', null, tstzrange((current_date + 5)::timestamptz + interval '13 hours', (current_date + 5)::timestamptz + interval '18 hours'), 'Bancada de roteador'),
+  ('20000000-0000-4000-8000-000000000008', '10000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000003', null, tstzrange((current_date + 7)::timestamptz + interval '9 hours', (current_date + 7)::timestamptz + interval '11 hours'), 'Revisão de licenças'),
+  ('20000000-0000-4000-8000-000000000009', '10000000-0000-4000-8000-000000000004', 'a0000000-0000-4000-8000-000000000002', null, tstzrange((current_date + 2)::timestamptz + interval '8 hours', (current_date + 2)::timestamptz + interval '18 hours'), 'Manutenção programada');
+
+-- ── Mural (6 recados) ─────────────────────────────────────────────────────
+insert into public.notices (id, author_id, tipo, corpo, pinned, resource_id, expires_at) values
+  ('30000000-0000-4000-8000-000000000001', 'a0000000-0000-4000-8000-000000000002', 'manutencao', 'Manutenção do Lab-rack R7 durante toda a semana. Evitem agendar nele.', true, '10000000-0000-4000-8000-000000000004', (current_date + 7)::timestamptz),
+  ('30000000-0000-4000-8000-000000000002', 'a0000000-0000-4000-8000-000000000001', 'aviso', 'Liberem as reservas de laboratório que não forem usar até sexta.', false, null, null),
+  ('30000000-0000-4000-8000-000000000003', 'a0000000-0000-4000-8000-000000000003', 'incidente', 'Porta Gi1/0/24 com flapping intermitente; em investigação.', false, '10000000-0000-4000-8000-000000000005', null),
+  ('30000000-0000-4000-8000-000000000004', 'a0000000-0000-4000-8000-000000000002', 'aviso', 'Nova licença Fortinet disponível para PoCs de segurança.', false, '10000000-0000-4000-8000-000000000002', null),
+  ('30000000-0000-4000-8000-000000000005', 'a0000000-0000-4000-8000-000000000001', 'manutencao', 'Janela de manutenção da nuvem OCI na quinta, 22h às 23h.', false, '10000000-0000-4000-8000-00000000000a', null),
+  ('30000000-0000-4000-8000-000000000006', 'a0000000-0000-4000-8000-000000000003', 'aviso', 'Passagem de turno: DNA Center reservado para a PoC da ACME hoje.', false, '10000000-0000-4000-8000-000000000001', (current_date + 2)::timestamptz);
+
+-- Gera os avisos de vencimento automáticos (DNA Center, Conta demo AWS…).
+select public.gerar_avisos_vencimento();

@@ -33,6 +33,19 @@ export const qk = {
   documents: {
     byOpportunity: (oppId: string) => ['documents', 'opp', oppId] as const,
   },
+  resources: {
+    all: ['resources'] as const,
+    list: () => ['resources', 'list'] as const,
+  },
+  reservations: {
+    all: ['reservations'] as const,
+    list: () => ['reservations', 'list'] as const,
+    mine: (uid: string) => ['reservations', 'mine', uid] as const,
+  },
+  notices: {
+    all: ['notices'] as const,
+    list: () => ['notices', 'list'] as const,
+  },
   activity: {
     byOpportunity: (oppId: string) => ['activity', 'opp', oppId] as const,
   },

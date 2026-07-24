@@ -38,6 +38,7 @@ export function FaixaOcupacao({
   agora,
   densidade = 'media',
   ticks = 8,
+  formatoTick,
   ariaLabel,
   className,
 }: {
@@ -47,6 +48,7 @@ export function FaixaOcupacao({
   agora?: Date
   densidade?: FaixaDensidade
   ticks?: number
+  formatoTick?: string
   ariaLabel?: string
   className?: string
 }) {
@@ -68,10 +70,12 @@ export function FaixaOcupacao({
       const t = new Date(janelaInicio.getTime() + (total * i) / ticks)
       return {
         left: (i / ticks) * 100,
-        label: format(t, densidade === 'completa' ? 'HH' : 'dd/MM', { locale: ptBR }),
+        label: format(t, formatoTick ?? (densidade === 'completa' ? 'HH' : 'dd/MM'), {
+          locale: ptBR,
+        }),
       }
     })
-  }, [densidade, ticks, janelaInicio, total])
+  }, [densidade, ticks, janelaInicio, total, formatoTick])
 
   const agoraPct =
     agora && agora >= janelaInicio && agora <= janelaFim
