@@ -10,6 +10,7 @@ import { OpportunitiesPage } from '@/features/opportunities/pages/opportunities-
 import { OpportunityDetailPage } from '@/features/opportunities/pages/opportunity-detail-page'
 import { TemplatesPage } from '@/features/templates/pages/templates-page'
 import { TemplateEditorPage } from '@/features/templates/pages/template-editor-page'
+import { BoardPage } from '@/features/board/pages/board-page'
 
 export const router = createBrowserRouter([
   {
@@ -41,10 +42,7 @@ export const router = createBrowserRouter([
       },
       { path: '/oportunidades', element: <OpportunitiesPage /> },
       { path: '/oportunidades/:id', element: <OpportunityDetailPage /> },
-      {
-        path: '/kanban',
-        element: <Placeholder title="Kanban" descricao="Board de soluções chega na Fase 3." />,
-      },
+      { path: '/kanban', element: <BoardPage /> },
       {
         path: '/lab',
         element: (

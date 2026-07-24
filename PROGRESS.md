@@ -74,3 +74,16 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 - Workspace é escopado por oportunidade; uma visão global "meus arquivos" (pastas sem oportunidade) fica como acabamento.
 - Update/delete de cliente pela UI ainda não (só create + uso no select) — anotado para acabamento.
 - Code-splitting por rota segue pendente (bundle único ~1 MB); farei quando `recharts`/`@react-pdf` entrarem (Fases 5–6).
+
+---
+
+## Fase 3 — Kanban ✅
+
+**Feito**
+- Board com colunas de `board_columns`; cada card é uma `opportunity` (sem entidade duplicada).
+- Drag & drop (@dnd-kit) com **atualização otimista + rollback** e persistência de `position` fracionária (midpoint, sem reindexar a coluna toda).
+- Handle de arraste separado do clique (o card continua navegável para o detalhe); `DragOverlay` durante o arraste.
+- Filtros: cliente, responsável, prioridade e "vencendo (≤3d)". Prazo vencido destaca o card (borda `halt`).
+- Falha ao mover reverte o card e mostra toast — a RLS só permite mover oportunidades das quais você é dono (admin move todas).
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅. Persistência confirmada via API (PATCH 204 → releitura mantém coluna/posição). Rollback visual coberto pelo E2E na Fase 6.
