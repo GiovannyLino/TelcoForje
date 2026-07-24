@@ -6,7 +6,7 @@ test('preenche discovery → finaliza → exporta PDF', async ({ page }) => {
   await page.goto('/discovery')
 
   await page.getByRole('button', { name: 'Novo discovery' }).first().click()
-  await escolher(page, 'Selecione', /SD-WAN campus/) // oportunidade
+  await escolher(page, 'Selecione', /SD-WAN gerenciado/) // oportunidade
   await escolher(page, 'Selecione', /Rede Corporativa/) // template
   await page.getByRole('button', { name: 'Começar' }).click()
 

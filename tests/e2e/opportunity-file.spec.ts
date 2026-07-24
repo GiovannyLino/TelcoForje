@@ -9,7 +9,7 @@ test('login → cria oportunidade → anexa arquivo', async ({ page }) => {
 
   const titulo = `E2E arquivo ${Date.now()}`
   await page.getByLabel('Título').fill(titulo)
-  await escolher(page, 'Selecione', 'ACME Telecom') // cliente
+  await escolher(page, 'Selecione', 'TIM Brasil') // cliente
   await escolher(page, 'Selecione', 'Análise inicial') // coluna
   await page.getByRole('dialog').getByRole('button', { name: 'Criar oportunidade' }).click()
 

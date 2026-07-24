@@ -2,8 +2,8 @@ import { expect, type Page } from '@playwright/test'
 
 export async function login(page: Page, email = 'ana@telcoforge.dev', senha = 'telcoforge123') {
   await page.goto('/login')
-  await page.getByLabel('E-mail').fill(email)
-  await page.getByLabel('Senha').fill(senha)
+  await page.getByLabel('E-mail', { exact: true }).fill(email)
+  await page.getByLabel('Senha', { exact: true }).fill(senha)
   await page.getByRole('button', { name: 'Entrar' }).click()
   await expect(page).toHaveURL('http://localhost:5173/', { timeout: 15_000 })
 }
