@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 40" fill="none">
+  <text x="0" y="31" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="30" fill="#E30613">Claro</text>
+  <g stroke="#E30613" stroke-width="3.2" stroke-linecap="round">
+    <line x1="132" y1="9" x2="139" y2="4"/>
+    <line x1="135" y1="15" x2="143" y2="14"/>
+    <line x1="132" y1="21" x2="139" y2="25"/>
+  </g>
+</svg>
