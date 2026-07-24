@@ -34,6 +34,47 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_log: {
+        Row: {
+          acao: string
+          actor_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          opportunity_id: string | null
+          payload: Json
+        }
+        Insert: {
+          acao: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          opportunity_id?: string | null
+          payload?: Json
+        }
+        Update: {
+          acao?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          opportunity_id?: string | null
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_log_actor_id_fkey"
+            columns: ["actor_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       board_columns: {
         Row: {
           cor: string | null
@@ -657,6 +698,45 @@ export type Database = {
           },
         ]
       }
+      search_index: {
+        Row: {
+          corpo: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          opportunity_id: string | null
+          owner_id: string | null
+          titulo: string | null
+          tsv: unknown
+          updated_at: string
+          visibility: string | null
+        }
+        Insert: {
+          corpo?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          opportunity_id?: string | null
+          owner_id?: string | null
+          titulo?: string | null
+          tsv?: unknown
+          updated_at?: string
+          visibility?: string | null
+        }
+        Update: {
+          corpo?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          opportunity_id?: string | null
+          owner_id?: string | null
+          titulo?: string | null
+          tsv?: unknown
+          updated_at?: string
+          visibility?: string | null
+        }
+        Relationships: []
+      }
       templates: {
         Row: {
           author_id: string | null
@@ -709,6 +789,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      buscar: {
+        Args: { q: string }
+        Returns: {
+          entity_id: string
+          entity_type: string
+          opportunity_id: string
+          rank: number
+          titulo: string
+          trecho: string
+        }[]
+      }
       gerar_avisos_vencimento: { Args: never; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
       pode_escrever_pasta: { Args: { f_id: string }; Returns: boolean }

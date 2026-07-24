@@ -2,7 +2,11 @@ import type { ReactNode } from 'react'
 import { Activity, CalendarClock, ClipboardList, FileText, Paperclip } from 'lucide-react'
 import { useFilesByOpportunity } from '@/features/workspace/hooks'
 import { useDocumentsByOpportunity } from '@/features/documents/hooks'
-import { formatBytes } from '@/lib/format'
+import { useReservations } from '@/features/lab/hooks'
+import { parseRange } from '@/features/lab/lib'
+import { useDiscoveryResponsesByOpportunity } from '@/features/discovery/hooks'
+import { frase, useActivityByOpportunity } from '@/features/activity/hooks'
+import { formatBytes, formatDateTime, formatRelative } from '@/lib/format'
 
 function RailSection({
   icon,
@@ -29,47 +33,75 @@ function RailSection({
   )
 }
 
+const vazio = (t: string) => <p className="text-[12px] text-muted">{t}</p>
+
 export function ContextRail({ oppId }: { oppId: string }) {
   const files = useFilesByOpportunity(oppId)
   const docs = useDocumentsByOpportunity(oppId)
+  const reservas = useReservations()
+  const discoveries = useDiscoveryResponsesByOpportunity(oppId)
+  const atividade = useActivityByOpportunity(oppId)
+
+  const minhasReservas = (reservas.data ?? []).filter((r) => r.opportunity_id === oppId)
 
   return (
     <aside className="hidden w-80 shrink-0 flex-col gap-5 border-l border-line bg-surface p-4 xl:flex">
       <h2 className="font-mono text-[11px] uppercase tracking-widest text-muted">Contexto</h2>
 
       <RailSection icon={<Paperclip />} title="Arquivos" count={files.data?.length}>
-        {files.data && files.data.length > 0 ? (
-          files.data.slice(0, 6).map((f) => (
-            <div key={f.id} className="flex items-center justify-between gap-2 text-[12px]">
-              <span className="truncate font-mono text-ink">{f.nome}</span>
-              <span className="shrink-0 text-muted">{formatBytes(f.size_bytes)}</span>
-            </div>
-          ))
-        ) : (
-          <p className="text-[12px] text-muted">Nenhum arquivo.</p>
-        )}
+        {files.data && files.data.length > 0
+          ? files.data.slice(0, 6).map((f) => (
+              <div key={f.id} className="flex items-center justify-between gap-2 text-[12px]">
+                <span className="truncate font-mono text-ink">{f.nome}</span>
+                <span className="shrink-0 text-muted">{formatBytes(f.size_bytes)}</span>
+              </div>
+            ))
+          : vazio('Nenhum arquivo.')}
       </RailSection>
 
       <RailSection icon={<FileText />} title="Documentos" count={docs.data?.length}>
-        {docs.data && docs.data.length > 0 ? (
-          docs.data.map((d) => (
-            <div key={d.id} className="truncate text-[12px] text-ink">
-              {d.titulo}
-            </div>
-          ))
-        ) : (
-          <p className="text-[12px] text-muted">Nenhum documento.</p>
-        )}
+        {docs.data && docs.data.length > 0
+          ? docs.data.map((d) => (
+              <div key={d.id} className="truncate text-[12px] text-ink">
+                {d.titulo}
+              </div>
+            ))
+          : vazio('Nenhum documento.')}
       </RailSection>
 
-      <RailSection icon={<CalendarClock />} title="Reservas">
-        <p className="text-[12px] text-muted">Chega na Fase 4.</p>
+      <RailSection icon={<CalendarClock />} title="Reservas" count={minhasReservas.length}>
+        {minhasReservas.length > 0
+          ? minhasReservas.slice(0, 4).map((r) => (
+              <div key={r.id} className="text-[12px]">
+                <span className="text-ink">{r.resource?.nome}</span>
+                <span className="block font-mono text-[11px] text-muted">
+                  {formatDateTime(parseRange(r.periodo)[0])}
+                </span>
+              </div>
+            ))
+          : vazio('Nenhuma reserva.')}
       </RailSection>
-      <RailSection icon={<ClipboardList />} title="Discoveries">
-        <p className="text-[12px] text-muted">Chega na Fase 5.</p>
+
+      <RailSection icon={<ClipboardList />} title="Discoveries" count={discoveries.data?.length}>
+        {discoveries.data && discoveries.data.length > 0
+          ? discoveries.data.map((d) => (
+              <div key={d.id} className="flex items-center justify-between gap-2 text-[12px]">
+                <span className="truncate text-ink">{d.template?.nome}</span>
+                <span className="shrink-0 font-mono text-muted">{d.completude}%</span>
+              </div>
+            ))
+          : vazio('Nenhum discovery.')}
       </RailSection>
+
       <RailSection icon={<Activity />} title="Atividade">
-        <p className="text-[12px] text-muted">Chega na Fase 6.</p>
+        {atividade.data && atividade.data.length > 0
+          ? atividade.data.slice(0, 6).map((a) => (
+              <div key={a.id} className="text-[12px]">
+                <span className="text-ink">{frase(a)}</span>
+                <span className="block text-[11px] text-muted">{formatRelative(a.created_at)}</span>
+              </div>
+            ))
+          : vazio('Sem atividade ainda.')}
       </RailSection>
     </aside>
   )
