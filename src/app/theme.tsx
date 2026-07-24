@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 export type Theme = 'light' | 'dark' | 'system'
 export type ResolvedTheme = 'light' | 'dark'
 
-const STORAGE_KEY = 'uplink-theme'
+const STORAGE_KEY = 'telcoforge-theme'
 
 type ThemeState = {
   theme: Theme

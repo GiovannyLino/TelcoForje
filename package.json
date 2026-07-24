@@ -1,5 +1,5 @@
 {
-  "name": "uplink",
+  "name": "telcoforge",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -46,6 +46,7 @@
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "lucide-react": "^0.460.0",
+    "motion": "^12.42.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.53.0",

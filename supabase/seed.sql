@@ -1,5 +1,5 @@
 -- Fase 2 — Seed. Roda após as migrations no `supabase db reset`.
--- Senha de todos os usuários demo: uplink123
+-- Senha de todos os usuários demo: telcoforge123
 
 -- ── Usuários demo ─────────────────────────────────────────────────────────
 -- Bloco DO: criado e executado junto, sem depender de função pré-existente
@@ -10,10 +10,10 @@ declare
 begin
   for u in
     select * from (values
-      ('a0000000-0000-4000-8000-000000000001'::uuid, 'ana@uplink.dev', 'Ana Reis', 'admin'::user_role),
-      ('a0000000-0000-4000-8000-000000000002'::uuid, 'leo@uplink.dev', 'Léo Martins', 'engenheiro'::user_role),
-      ('a0000000-0000-4000-8000-000000000003'::uuid, 'rui@uplink.dev', 'Rui Alves', 'engenheiro'::user_role),
-      ('a0000000-0000-4000-8000-000000000004'::uuid, 'bia@uplink.dev', 'Bia Costa', 'leitor'::user_role)
+      ('a0000000-0000-4000-8000-000000000001'::uuid, 'ana@telcoforge.dev', 'Ana Reis', 'admin'::user_role),
+      ('a0000000-0000-4000-8000-000000000002'::uuid, 'leo@telcoforge.dev', 'Léo Martins', 'engenheiro'::user_role),
+      ('a0000000-0000-4000-8000-000000000003'::uuid, 'rui@telcoforge.dev', 'Rui Alves', 'engenheiro'::user_role),
+      ('a0000000-0000-4000-8000-000000000004'::uuid, 'bia@telcoforge.dev', 'Bia Costa', 'leitor'::user_role)
     ) as t(id, email, nome, role)
   loop
     insert into auth.users (
@@ -22,7 +22,7 @@ begin
       confirmation_token, recovery_token, email_change_token_new, email_change
     ) values (
       '00000000-0000-0000-0000-000000000000', u.id, 'authenticated', 'authenticated',
-      u.email, extensions.crypt('uplink123', extensions.gen_salt('bf')), now(),
+      u.email, extensions.crypt('telcoforge123', extensions.gen_salt('bf')), now(),
       '{"provider":"email","providers":["email"]}'::jsonb,
       jsonb_build_object('nome', u.nome), now(), now(),
       '', '', '', ''

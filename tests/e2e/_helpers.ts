@@ -1,6 +1,6 @@
 import { expect, type Page } from '@playwright/test'
 
-export async function login(page: Page, email = 'ana@uplink.dev', senha = 'uplink123') {
+export async function login(page: Page, email = 'ana@telcoforge.dev', senha = 'telcoforge123') {
   await page.goto('/login')
   await page.getByLabel('E-mail').fill(email)
   await page.getByLabel('Senha').fill(senha)

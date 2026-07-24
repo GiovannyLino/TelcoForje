@@ -39,7 +39,7 @@ export function DiscoveryFillPage() {
     data: new Date().toLocaleDateString('pt-BR'),
     template: r.template?.nome,
   }
-  const fileName = `discovery-${(r.opportunity?.titulo ?? 'uplink')
+  const fileName = `discovery-${(r.opportunity?.titulo ?? 'telcoforge')
     .toLowerCase()
     .replace(/\s+/g, '-')}.pdf`
   const rodape = [meta.cliente, meta.oportunidade, meta.engenheiro, meta.data, meta.template]

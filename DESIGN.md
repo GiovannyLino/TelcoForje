@@ -1,4 +1,4 @@
-# DESIGN.md — Uplink
+# DESIGN.md — TelcoForge
 
 > Sistema visual de um **instrumento de engenharia** usado o dia inteiro, muitas vezes ao vivo numa reunião com o cliente e a tela compartilhada. Denso em informação, calmo, legível, rápido. **Não** é um dashboard genérico.
 
@@ -227,11 +227,11 @@ pt-BR, voz ativa, **frase capitalizada** (não Title Case). O botão diz o que a
 
 ---
 
-## 10. Revisão crítica (item 5.5) — genérico × Uplink
+## 10. Revisão crítica (item 5.5) — genérico × TelcoForge
 
 Reli cada escolha e perguntei: *"isto é para este produto, ou o padrão que eu geraria para qualquer dashboard?"* O que mudei:
 
-| Instinto genérico | Escolha para o Uplink | Por quê |
+| Instinto genérico | Escolha para o TelcoForge | Por quê |
 |---|---|---|
 | Cards com sombra suave e `rounded-xl` | Painéis com **hairline 1px**, raio **4px**, sem sombra | Instrumento de engenharia lido em tela compartilhada — estrutura, não fofura |
 | Chips de status multicoloridos | **1 destaque** (`signal`) + `live/warn/halt` só para estado | Cor vira sinal, não ruído; o olho acha o que importa numa reunião |

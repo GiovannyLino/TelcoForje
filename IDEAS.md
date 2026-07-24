@@ -1,4 +1,4 @@
-# IDEAS.md — Uplink
+# IDEAS.md — TelcoForge
 
 Boas ideias que surgem durante o desenvolvimento mas estão **fora do escopo atual**. Anotadas aqui para não desviar do plano; avaliadas entre fases ou entre marcos.
 

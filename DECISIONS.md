@@ -1,4 +1,4 @@
-# DECISIONS.md — Uplink
+# DECISIONS.md — TelcoForge
 
 Registro de decisões. Formato: **Decisão · Contexto · Consequência**.
 

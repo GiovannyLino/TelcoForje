@@ -1,4 +1,4 @@
-# PROGRESS.md — Uplink
+# PROGRESS.md — TelcoForge
 
 Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build` verdes.
 

@@ -6,7 +6,7 @@ import { HelpSheet } from './shell/help-sheet'
 import { CommandPalette } from '@/features/search/components/command-palette'
 import { Skeleton } from '@/components/ui/skeleton'
 
-const SIDEBAR_KEY = 'uplink-sidebar-collapsed'
+const SIDEBAR_KEY = 'telcoforge-sidebar-collapsed'
 
 export function RootLayout() {
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem(SIDEBAR_KEY) === '1')

@@ -1,4 +1,4 @@
-# PLAN.md — Uplink
+# PLAN.md — TelcoForge
 
 > Cockpit de pré-vendas técnica. Tudo orbita uma **Oportunidade** (cliente + demanda técnica).
 > Este documento é o contrato de arquitetura. Nada de código de produção antes da aprovação (Aprovação 0).
@@ -7,7 +7,7 @@
 
 ## 1. Visão e princípio unificador
 
-O Uplink não é três módulos com um menu em comum. É **um sistema onde o contexto atravessa os módulos**. A entidade central é a `oportunidade`. Ao abri-la, o engenheiro vê numa única tela: arquivos/diagramas, o card do Kanban (a própria oportunidade), reservas de laboratório, discovery notes e a linha do tempo de atividade — tudo daquele cliente/demanda.
+O TelcoForge não é três módulos com um menu em comum. É **um sistema onde o contexto atravessa os módulos**. A entidade central é a `oportunidade`. Ao abri-la, o engenheiro vê numa única tela: arquivos/diagramas, o card do Kanban (a própria oportunidade), reservas de laboratório, discovery notes e a linha do tempo de atividade — tudo daquele cliente/demanda.
 
 O mecanismo que garante isso é o **trilho de contexto** (painel direito persistente nas telas de oportunidade) alimentado por `opportunity_id`, presente como FK em quase toda tabela do domínio.
 

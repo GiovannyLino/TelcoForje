@@ -30,7 +30,7 @@ export function GlobalSearchPage() {
           <EmptyState
             icon={<Search />}
             title="Comece a digitar"
-            description="A busca cobre o conteúdo de todo o Uplink."
+            description="A busca cobre o conteúdo de todo o TelcoForge."
           />
         ) : data && data.length > 0 ? (
           <ul className="flex flex-col gap-1">

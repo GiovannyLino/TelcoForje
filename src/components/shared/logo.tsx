@@ -1,28 +1,26 @@
 import { cn } from '@/lib/utils'
+import { APP_NAME } from '@/lib/constants'
+import { LogicalisMark } from '@/assets/brand/logicalis-mark'
 
 export function Logo({
   className,
   showWordmark = true,
+  markClassName,
 }: {
   className?: string
   showWordmark?: boolean
+  markClassName?: string
 }) {
   return (
     <span className={cn('inline-flex items-center gap-2', className)}>
-      <svg viewBox="0 0 32 32" className="size-6" aria-hidden>
-        <rect width="32" height="32" rx="4" className="fill-ink" />
-        <path
-          d="M16 7 L23 22 H9 Z"
-          fill="none"
-          className="stroke-signal"
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-        />
-        <circle cx="16" cy="24.5" r="1.6" className="fill-live" />
-      </svg>
+      <LogicalisMark className={cn('size-6', markClassName)} />
       {showWordmark ? (
-        <span className="font-display text-[16px] font-semibold text-ink">Uplink</span>
-      ) : null}
+        <span className="font-display text-[16px] font-semibold tracking-tight text-ink">
+          Telco<span className="text-signal">Forge</span>
+        </span>
+      ) : (
+        <span className="sr-only">{APP_NAME}</span>
+      )}
     </span>
   )
 }

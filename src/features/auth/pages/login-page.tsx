@@ -3,7 +3,7 @@ import { LoginForm } from '../components/login-form'
 
 export function LoginPage() {
   return (
-    <AuthShell title="Entrar no Uplink" subtitle="Cockpit de pré-vendas técnica">
+    <AuthShell title="Entrar no TelcoForge" subtitle="Cockpit de pré-vendas e observabilidade">
       <LoginForm />
     </AuthShell>
   )
