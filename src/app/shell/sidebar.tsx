@@ -24,7 +24,8 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
   return (
     <nav
       className={cn(
-        'hidden shrink-0 flex-col gap-0.5 border-r border-line bg-surface p-2 sm:flex',
+        'sticky top-14 hidden h-[calc(100dvh-3.5rem)] shrink-0 flex-col gap-0.5 border-r border-(--glass-border) bg-surface p-2 backdrop-blur-[20px] supports-backdrop-filter:bg-(--glass) sm:flex',
+        'transition-[width] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)]',
         collapsed ? 'w-14' : 'w-56',
       )}
     >

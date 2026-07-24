@@ -41,7 +41,7 @@ export function RootLayout() {
   }, [])
 
   return (
-    <div className="flex min-h-screen flex-col bg-paper">
+    <div className="app-bg flex min-h-screen flex-col">
       <Topbar onToggleSidebar={toggleSidebar} onOpenSearch={() => setPaletteOpen(true)} />
       <div className="flex flex-1">
         <Sidebar collapsed={collapsed} />

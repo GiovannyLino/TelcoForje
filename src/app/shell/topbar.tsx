@@ -12,7 +12,7 @@ export function Topbar({
   onOpenSearch: () => void
 }) {
   return (
-    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-line bg-surface px-3">
+    <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-3 border-b border-(--glass-border) bg-surface px-3 backdrop-blur-[20px] backdrop-saturate-150 supports-backdrop-filter:bg-(--glass-strong)">
       <Button
         variant="ghost"
         size="icon"

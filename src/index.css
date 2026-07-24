@@ -23,6 +23,30 @@
   --warn-weak: #fbeedd;
   --halt: #d1372f;
   --halt-weak: #fbe3e1;
+
+  /* Glass / liquid glass */
+  --glass: rgba(255, 255, 255, 0.6);
+  --glass-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(15, 26, 42, 0.08);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  --glass-shadow: 0 10px 34px -12px rgba(15, 26, 42, 0.22);
+  --glass-blur: 16px;
+
+  /* Elevação */
+  --shadow-1: 0 1px 2px rgba(15, 26, 42, 0.06), 0 1px 1px rgba(15, 26, 42, 0.04);
+  --shadow-2: 0 8px 24px -10px rgba(15, 26, 42, 0.2);
+  --shadow-3: 0 22px 50px -18px rgba(15, 26, 42, 0.3);
+
+  /* Aurora / mesh (fundo translúcido para o vidro ter o que borrar) */
+  --aurora-1: rgba(228, 0, 43, 0.16);
+  --aurora-2: rgba(18, 165, 148, 0.12);
+  --aurora-3: rgba(11, 95, 255, 0.1);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-1: 150ms;
+  --dur-2: 250ms;
+  --dur-3: 400ms;
 }
 
 /* Escuro por preferência do sistema (a menos que o usuário force claro). */
@@ -63,6 +87,20 @@
   --warn-weak: #2e2313;
   --halt: #f0655d;
   --halt-weak: #30181a;
+
+  --glass: rgba(17, 26, 43, 0.55);
+  --glass-strong: rgba(17, 26, 43, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --glass-shadow: 0 16px 44px -12px rgba(0, 0, 0, 0.55);
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 10px 28px -10px rgba(0, 0, 0, 0.55);
+  --shadow-3: 0 26px 58px -18px rgba(0, 0, 0, 0.65);
+
+  --aurora-1: rgba(245, 50, 79, 0.2);
+  --aurora-2: rgba(45, 212, 191, 0.12);
+  --aurora-3: rgba(76, 134, 255, 0.12);
 }
 
 @theme inline {
@@ -89,6 +127,11 @@
   --radius-sm: 3px;
   --radius-md: 4px;
   --radius-lg: 6px;
+
+  --ease-brand: var(--ease-out);
+  --shadow-e1: var(--shadow-1);
+  --shadow-e2: var(--shadow-2);
+  --shadow-e3: var(--shadow-3);
 }
 
 @layer base {
@@ -218,4 +261,116 @@
 }
 .md input[type='checkbox'] {
   margin-right: 0.4rem;
+}
+
+/* ── Glass / liquid glass ─────────────────────────────────────────────────
+   Fundo translúcido em camadas + realce interno no topo + sombra difusa.
+   Nunca aplicar em elementos que animam a cada frame (só transform/opacity). */
+@layer components {
+  .glass {
+    background-color: var(--glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  }
+  .glass-strong {
+    background-color: var(--glass-strong);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-highlight), var(--glass-shadow);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+  }
+  /* Fallback: sem suporte a backdrop-filter, cai para superfície sólida. */
+  @supports not (
+    (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+  ) {
+    .glass,
+    .glass-strong {
+      background-color: var(--surface);
+    }
+  }
+}
+
+/* Fundo do app: malha aurora sutil (dá profundidade ao vidro). */
+.app-bg {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(55rem 55rem at 8% -12%, var(--aurora-1), transparent 55%),
+    radial-gradient(48rem 48rem at 102% -6%, var(--aurora-3), transparent 50%),
+    radial-gradient(46rem 46rem at 88% 108%, var(--aurora-2), transparent 55%);
+  background-attachment: fixed;
+}
+
+/* Elevação animada no hover — anima só transform/opacity/box-shadow. */
+.hover-lift {
+  transition:
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
+  will-change: transform;
+}
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-3);
+}
+
+/* Sheen: brilho diagonal sutil no topo de superfícies em vidro. */
+.sheen {
+  position: relative;
+  isolation: isolate;
+}
+.sheen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    transparent 40%
+  );
+  pointer-events: none;
+}
+
+/* Entrada suave de conteúdo (usada por rotas/listas sem depender de JS). */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise-in {
+  animation: rise-in var(--dur-3) var(--ease-out) both;
+}
+
+/* Entradas de overlay/diálogo (Radix data-state=open). */
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.overlay-in[data-state='open'] {
+  animation: overlay-in var(--dur-2) var(--ease-out);
+}
+.pop-in[data-state='open'] {
+  animation: pop-in var(--dur-2) var(--ease-out);
 }
