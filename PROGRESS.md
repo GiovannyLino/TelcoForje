@@ -161,3 +161,17 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 - Chunk `index` ~820 kB (supabase-js + core): as libs pesadas já foram separadas; um split de vendor melhora cache, não o total.
 - Filtros de busca por cliente/engenheiro/período: a RPC hoje é texto puro (respeitando RLS); filtros ficam para acabamento.
 - Navegação mobile (drawer) e atalhos `N`/`G+letra` ficam para acabamento; `⌘K`, `?` e `Esc` funcionam.
+
+---
+
+## Rebranding + Redesign — TelcoForge (glass) ✅
+
+Redesenho completo (login → última aba) sem quebrar funcionalidade. Cada fase fechou com `typecheck` + `lint` + `build` verdes; 11 testes unitários e 3 E2E passando ao final. Feito no branch `redesign/telcoforge-glass`.
+
+- **F1 — Rebranding:** `Uplink` → **TelcoForge**; `<Logo/>` passa a usar o mark da **Logicalis** (SVG vetorial em `src/assets/brand/`) + favicon/`<title>`; accent único vira o **vermelho de marca** (`#E4002B`/`#F5324F`) via token `--signal`; chaves de localStorage renomeadas; usuários demo migrados para `@telcoforge.dev` / senha `telcoforge123`. Termo de rede "Uplink 10G" preservado.
+- **F2 — Design system:** tokens de **glass/liquid glass**, elevação, malha aurora e motion (`--ease-out` + durações) em light/dark; utilitários `.glass`/`.glass-strong` com fallback `@supports`, `.app-bg`, `.hover-lift`, `.sheen`; superfícies migradas (Card, Topbar/Sidebar/Rail sticky, Dialog); `motion` (React 19) + `src/lib/motion.ts`.
+- **F3 — Login:** card glass central, fundo aurora animado (transform), **carrossel de logos de parceiros** (duas faixas opostas, máscara de fade, pausa no hover, CSS puro) e `FloatingField` (label flutuante, ícone, toggle de senha). Autenticação intacta.
+- **F4 — Dashboard e abas:** sidebar com indicador ativo animado (motion `layoutId`), transição de rota, KPIs com delta/sparkline (série real), funil em gráfico com gradiente e tooltip glass, `DataTable` polida, dropdown/command-palette em glass. Abas **Reservas** e **Atividade** da oportunidade ligadas a dados reais (fim dos placeholders).
+- **F5 — Dados:** dataset telco/observability — clientes viram operadoras (**TIM, Claro, Vivo, Embratel, V.tal**), recursos usam fabricantes parceiros (**Splunk, NETSCOUT, Fortinet, VMware, Red Hat, Cisco, ThousandEyes**), métricas plausíveis (SLA, MTTR, latência, PoPs, R$) e cidades reais. IDs/enums/FKs e os períodos não-sobrepostos das reservas preservados.
+
+**Decisões que valem registro:** logos recriadas como **SVG/wordmarks** (os PNGs não estavam no disco) — uso ilustrativo em demo; biblioteca de animação `motion` adicionada (autorizado); `tsconfig.json` restaurado (valor externo inválido `"ignoreDeprecations": "6.0"` quebrava o typecheck).
