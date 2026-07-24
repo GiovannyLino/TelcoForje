@@ -6,16 +6,17 @@ import { cn } from '@/lib/utils'
  * nítida em qualquer tamanho.
  */
 export function LogicalisRibbon({ className }: { className?: string }) {
-  // Uma única forma preenchida (dois lóbulos simétricos que se encontram no
-  // centro) — fita vermelha contínua, sem emendas.
+  // Fita em "S" fluida — um único traço contínuo (sem emendas), pontas
+  // arredondadas. Recriação vetorial da marca da Logicalis.
   return (
-    <svg viewBox="0 0 104 40" className={className} aria-hidden>
+    <svg viewBox="0 0 84 64" fill="none" className={className} aria-hidden>
       <path
-        fill="#E2001A"
-        d="M52 25 C 43 9 22 7 13 17 C 6 24 15 30 26 23 C 36 18 45 21 52 25
-           C 61 9 82 7 91 17 C 98 24 89 30 78 23 C 68 18 59 21 52 25 Z"
+        d="M58 16 C 40 6 26 20 37 31 C 46 40 58 36 52 47 C 47 57 31 57 30 47"
+        stroke="#E2001A"
+        strokeWidth="14"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
-      <path fill="#BC0011" d="M52 25 C 50 21 50 18 52 15 C 54 18 54 21 52 25 Z" />
     </svg>
   )
 }
