@@ -1,26 +1,5 @@
 import type { ReactNode } from 'react'
-import { LogicalisMark } from '@/assets/brand/logicalis-mark'
-import { APP_VENDOR } from '@/lib/constants'
-import { PartnerMarquee } from './partner-marquee'
-
-function AuroraBackdrop() {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      <div
-        className="aurora-blob drift-a left-[-10%] top-[-15%] size-184 opacity-70"
-        style={{ background: 'var(--aurora-1)' }}
-      />
-      <div
-        className="aurora-blob drift-b right-[-12%] top-[-8%] size-160 opacity-60"
-        style={{ background: 'var(--aurora-3)' }}
-      />
-      <div
-        className="aurora-blob drift-a bottom-[-18%] left-[35%] size-168 opacity-60"
-        style={{ background: 'var(--aurora-2)' }}
-      />
-    </div>
-  )
-}
+import { Logo } from '@/components/shared/logo'
 
 export function AuthShell({
   title,
@@ -32,31 +11,16 @@ export function AuthShell({
   children: ReactNode
 }) {
   return (
-    <div className="app-bg relative min-h-dvh overflow-hidden">
-      <AuroraBackdrop />
-      <PartnerMarquee />
-
-      <div className="relative z-10 flex min-h-dvh items-center justify-center px-4 py-12">
-        <div className="w-full max-w-md rise-in">
-          <div className="mb-7 flex flex-col items-center gap-4 text-center">
-            <span className="inline-flex items-center gap-2.5">
-              <LogicalisMark className="size-11 drop-shadow-sm" />
-              <span className="font-display text-[26px] font-semibold tracking-tight text-ink">
-                Telco<span className="text-signal">Forge</span>
-              </span>
-            </span>
-            <div className="flex flex-col gap-1.5">
-              <h1 className="font-display text-[22px] font-semibold text-ink">{title}</h1>
-              <p className="text-[13px] text-muted">{subtitle}</p>
-            </div>
+    <div className="flex min-h-screen items-center justify-center bg-paper px-4">
+      <div className="w-full max-w-sm">
+        <div className="mb-6 flex flex-col items-center gap-3 text-center">
+          <Logo showWordmark={false} />
+          <div className="flex flex-col gap-1">
+            <h1 className="font-display text-[24px] font-semibold text-ink">{title}</h1>
+            <p className="text-[13px] text-muted">{subtitle}</p>
           </div>
-
-          <div className="glass-strong sheen rounded-2xl p-7">{children}</div>
-
-          <p className="mt-6 text-center text-[11px] uppercase tracking-widest text-muted/80">
-            por {APP_VENDOR} · parceiros de tecnologia
-          </p>
         </div>
+        <div className="rounded-md border border-line bg-surface p-6">{children}</div>
       </div>
     </div>
   )

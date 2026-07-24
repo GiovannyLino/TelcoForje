@@ -2,7 +2,6 @@ import { Suspense, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { Topbar } from './shell/topbar'
 import { Sidebar } from './shell/sidebar'
-import { PageTransition } from './shell/page-transition'
 import { HelpSheet } from './shell/help-sheet'
 import { CommandPalette } from '@/features/search/components/command-palette'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -42,7 +41,7 @@ export function RootLayout() {
   }, [])
 
   return (
-    <div className="app-bg flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-paper">
       <Topbar onToggleSidebar={toggleSidebar} onOpenSearch={() => setPaletteOpen(true)} />
       <div className="flex flex-1">
         <Sidebar collapsed={collapsed} />
@@ -54,9 +53,7 @@ export function RootLayout() {
               </div>
             }
           >
-            <PageTransition>
-              <Outlet />
-            </PageTransition>
+            <Outlet />
           </Suspense>
         </main>
       </div>

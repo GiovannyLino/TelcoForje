@@ -45,7 +45,7 @@ export function ContextRail({ oppId }: { oppId: string }) {
   const minhasReservas = (reservas.data ?? []).filter((r) => r.opportunity_id === oppId)
 
   return (
-    <aside className="sticky top-14 hidden h-[calc(100dvh-3.5rem)] w-80 shrink-0 flex-col gap-5 overflow-y-auto border-l border-(--glass-border) bg-surface p-4 backdrop-blur-[20px] supports-backdrop-filter:bg-(--glass) xl:flex">
+    <aside className="hidden w-80 shrink-0 flex-col gap-5 border-l border-line bg-surface p-4 xl:flex">
       <h2 className="font-mono text-[11px] uppercase tracking-widest text-muted">Contexto</h2>
 
       <RailSection icon={<Paperclip />} title="Arquivos" count={files.data?.length}>

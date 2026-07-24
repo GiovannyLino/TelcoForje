@@ -16,7 +16,7 @@ export function Logo({
       <LogicalisMark className={cn('size-6', markClassName)} />
       {showWordmark ? (
         <span className="font-display text-[16px] font-semibold tracking-tight text-ink">
-          Telco<span className="text-signal">Forge</span>
+          {APP_NAME}
         </span>
       ) : (
         <span className="sr-only">{APP_NAME}</span>

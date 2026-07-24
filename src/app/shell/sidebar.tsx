@@ -1,5 +1,4 @@
 import { NavLink } from 'react-router-dom'
-import { motion } from 'motion/react'
 import {
   ClipboardList,
   Columns3,
@@ -25,8 +24,7 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
   return (
     <nav
       className={cn(
-        'sticky top-14 hidden h-[calc(100dvh-3.5rem)] shrink-0 flex-col gap-0.5 border-r border-(--glass-border) bg-surface p-2 backdrop-blur-[20px] supports-backdrop-filter:bg-(--glass) sm:flex',
-        'transition-[width] duration-250 ease-[cubic-bezier(0.22,1,0.36,1)]',
+        'hidden shrink-0 flex-col gap-0.5 border-r border-line bg-surface p-2 sm:flex',
         collapsed ? 'w-14' : 'w-56',
       )}
     >
@@ -36,33 +34,17 @@ export function Sidebar({ collapsed }: { collapsed: boolean }) {
           to={it.to}
           end={it.end}
           title={collapsed ? it.label : undefined}
-          className="group relative flex items-center rounded-md px-2.5 py-2 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-signal"
+          className={({ isActive }) =>
+            cn(
+              'flex items-center gap-3 rounded-md px-2.5 py-2 text-[13px] transition-colors',
+              isActive
+                ? 'bg-signal-weak font-medium text-signal'
+                : 'text-muted hover:bg-surface-2 hover:text-ink',
+            )
+          }
         >
-          {({ isActive }) => (
-            <>
-              {isActive ? (
-                <motion.span
-                  layoutId="nav-active"
-                  className="absolute inset-0 rounded-md bg-signal-weak"
-                  transition={{ type: 'spring', stiffness: 520, damping: 42 }}
-                  aria-hidden
-                >
-                  <span className="absolute inset-y-1.5 left-0 w-0.5 rounded-full bg-signal" />
-                </motion.span>
-              ) : null}
-              <span
-                className={cn(
-                  'relative z-10 flex items-center gap-3 transition-colors',
-                  isActive
-                    ? 'font-medium text-signal'
-                    : 'text-muted group-hover:text-ink',
-                )}
-              >
-                <it.icon className="size-4 shrink-0" aria-hidden />
-                {!collapsed && <span className="truncate">{it.label}</span>}
-              </span>
-            </>
-          )}
+          <it.icon className="size-4 shrink-0" aria-hidden />
+          {!collapsed && <span className="truncate">{it.label}</span>}
         </NavLink>
       ))}
     </nav>

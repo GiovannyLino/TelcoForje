@@ -50,8 +50,8 @@ export function CommandPalette({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="overlay-in fixed inset-0 z-50 bg-ink/50 backdrop-blur-[2px]" />
-        <DialogPrimitive.Content className="palette-in glass-strong fixed left-1/2 top-24 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 overflow-hidden rounded-xl">
+        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-ink/40" />
+        <DialogPrimitive.Content className="fixed left-1/2 top-24 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 overflow-hidden rounded-md border border-line bg-surface shadow-lg">
           <DialogPrimitive.Title className="sr-only">Busca e ações</DialogPrimitive.Title>
           <Command shouldFilter={false} className="flex flex-col">
             <div className="flex items-center gap-2 border-b border-line px-3">

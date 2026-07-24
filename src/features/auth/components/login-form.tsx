@@ -2,11 +2,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Loader2, Lock, Mail } from 'lucide-react'
 import { loginSchema, type LoginInput } from '../schemas'
 import { traduzErroAuth, useSignIn } from '../hooks'
 import { Button } from '@/components/ui/button'
-import { FloatingField } from './floating-field'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { FieldError } from '@/components/shared/field-error'
 
 export function LoginForm() {
   const navigate = useNavigate()
@@ -29,37 +30,22 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
-      <FloatingField
-        id="email"
-        label="E-mail"
-        type="email"
-        autoComplete="email"
-        autoFocus
-        icon={<Mail />}
-        error={errors.email?.message}
-        {...register('email')}
-      />
-      <FloatingField
-        id="senha"
-        label="Senha"
-        autoComplete="current-password"
-        icon={<Lock />}
-        passwordToggle
-        error={errors.senha?.message}
-        {...register('senha')}
-      />
-      <Button type="submit" size="md" disabled={isSubmitting} className="mt-1 h-11">
-        {isSubmitting ? (
-          <>
-            <Loader2 className="animate-spin" /> Entrando…
-          </>
-        ) : (
-          'Entrar'
-        )}
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="email">E-mail</Label>
+        <Input id="email" type="email" autoComplete="email" autoFocus {...register('email')} />
+        <FieldError message={errors.email?.message} />
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <Label htmlFor="senha">Senha</Label>
+        <Input id="senha" type="password" autoComplete="current-password" {...register('senha')} />
+        <FieldError message={errors.senha?.message} />
+      </div>
+      <Button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? 'Entrando…' : 'Entrar'}
       </Button>
       <p className="text-center text-[13px] text-muted">
         Não tem conta?{' '}
-        <Link to="/cadastro" className="font-medium text-signal hover:underline">
+        <Link to="/cadastro" className="text-signal hover:underline">
           Criar conta
         </Link>
       </p>
