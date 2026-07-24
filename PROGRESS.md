@@ -134,3 +134,30 @@ Resumo do que mudou por fase. Cada fase fecha com `typecheck` + `lint` + `build`
 **Notas**
 - PDF usa fontes nativas (Helvetica/Courier) para robustez; fontes do produto no PDF ficam como acabamento.
 - Reabrir discovery finalizado para editar fica como acabamento (hoje é somente leitura + resumo/PDF).
+
+---
+
+## Fase 6 — Busca, dashboard e acabamento ✅
+
+**Banco (triggers)**
+- `search_index` mantido por trigger (tsv em português + `unaccent`); a linha carrega `owner_id`/`visibility` para a busca **não vazar** pasta privada. RPC `buscar(q)` com `ts_headline` (trecho destacado). Populado durante o seed pelos próprios triggers.
+- `activity_log` alimentado por trigger (insert/update) nas tabelas relevantes; leitura por qualquer autenticado, escrita só por trigger.
+
+**UI**
+- Command palette (⌘K / Ctrl+K): busca + ações rápidas; página `/busca`; folha de atalhos (`?`).
+- Dashboard "visão do dia": meus cards (gráfico Recharts), reservas de hoje, prazos vencendo, discoveries incompletos, recursos vencendo, mural.
+- Trilho de contexto completo: arquivos, documentos, reservas, discoveries e **linha do tempo de atividade** reais.
+- Code-splitting por rota: recharts, react-pdf e markdown saem do bundle inicial (chunks sob demanda).
+
+**Testes**
+- Vitest 11/11. **Playwright 3/3 fluxos passam** em Chromium: login→oportunidade→arquivo; reserva com conflito bloqueada; discovery→resumo→PDF.
+
+**Deploy-ready**
+- `vercel.json` (rewrite de SPA), README com passo a passo de Supabase nuvem + Vercel. **Não publicado** (Checkpoint B).
+
+**Verificação:** typecheck ✅ · lint ✅ · build ✅ · test ✅ · e2e ✅.
+
+**Notas / pendências declaradas (acabamento)**
+- Chunk `index` ~820 kB (supabase-js + core): as libs pesadas já foram separadas; um split de vendor melhora cache, não o total.
+- Filtros de busca por cliente/engenheiro/período: a RPC hoje é texto puro (respeitando RLS); filtros ficam para acabamento.
+- Navegação mobile (drawer) e atalhos `N`/`G+letra` ficam para acabamento; `⌘K`, `?` e `Esc` funcionam.
